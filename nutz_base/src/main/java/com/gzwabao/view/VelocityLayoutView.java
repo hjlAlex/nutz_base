@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -33,6 +34,9 @@ public class VelocityLayoutView extends AbstractPathView {
 	protected SimplePool writerPool = new SimplePool(40);
 	private final static String SUFFIX = ".html";
 
+	private static final StringUtils stringUtils = new StringUtils();
+	private static final DateUtils dateUtils = new DateUtils();
+
 	public VelocityLayoutView(String dest) {
 		super(dest);
 	}
@@ -50,7 +54,8 @@ public class VelocityLayoutView extends AbstractPathView {
 			context.put("base", req.getContextPath());
 			context.put("request", req);
 			context.put("session", req.getSession());
-			context.put("stringUtil", new StringUtils());
+			context.put("stringUtils", stringUtils);
+			context.put("dateUtils", dateUtils);
 			context.put("cacheUtil",
 					Mvcs.ctx().getDefaultIoc().get(CacheUtil.class));
 			// 请求的参数表,需要兼容之前的p.参数, Fix issue 418

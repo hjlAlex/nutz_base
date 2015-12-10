@@ -26,9 +26,9 @@ public class IndexAction {
 	private UserService userService;
 
 	@At("")
-	@Ok("vm:template.upload")
-	public void main(@Param("identity") int id) {
-		System.out.println(id);
+	@Ok("vm:template.index")
+	public void main() {
+
 	}
 
 	@At("/welcome")
@@ -44,4 +44,5 @@ public class IndexAction {
 		File f = tf.getFile();
 		System.out.println(f.getName());
 	}
+
 }
