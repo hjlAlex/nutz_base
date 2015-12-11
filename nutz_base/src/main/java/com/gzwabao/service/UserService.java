@@ -3,6 +3,15 @@
  */
 package com.gzwabao.service;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.nutz.dao.Cnd;
+import org.nutz.dao.Condition;
+import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
@@ -28,8 +37,28 @@ public class UserService {
 	 * @param user
 	 * @return
 	 */
-	public User addUser(User user) {
-		return userDao.save(user);
+	public int addUser(User user) {
+		int result = 400;
+		try {
+			if (StringUtils.isBlank(user.getName())) {
+				log.error("用户名非法!");
+				return result;
+			}
+			if (StringUtils.isBlank(user.getNickName())) {
+				log.error("昵称非法!");
+				return result;
+			}
+			if (StringUtils.isBlank(user.getPassword())) {
+				log.error("密码非法!");
+				return result;
+			}
+			user.setCreateTime(new Date());
+			user.setUpdateTime(new Date());
+			return userDao.save(user) != null ? 200 : 400;
+		} catch (Exception e) {
+			log.error("新增用户失败!name=" + user.getName(), e);
+		}
+		return result;
 	}
 
 	/**
@@ -39,7 +68,12 @@ public class UserService {
 	 * @return
 	 */
 	public int updateUser(User user) {
-		return userDao.updateAll(user);
+		try {
+			return userDao.updateAll(user);
+		} catch (Exception e) {
+			log.error("更新用户失败!name=" + user.getName(), e);
+		}
+		return 0;
 	}
 
 	/**
@@ -49,10 +83,69 @@ public class UserService {
 	 * @return
 	 */
 	public User getUserById(int id) {
-		return userDao.getById(User.class, id);
+		try {
+			return userDao.getById(User.class, id);
+		} catch (Exception e) {
+			log.error("获取用户失败!id=" + id, e);
+		}
+		return null;
 	}
 
+	/**
+	 * 通过id删除用户
+	 * 
+	 * @param id
+	 * @return
+	 * @since 2015年12月11日 上午9:54:51
+	 */
 	public int deleteUserById(int id) {
-		return userDao.deleteById(User.class, id);
+		try {
+			return userDao.deleteById(User.class, id);
+		} catch (Exception e) {
+			log.error("删除用户失败!id=" + id, e);
+		}
+		return 0;
+	}
+
+	/**
+	 * 根据条件分页获取用户
+	 * 
+	 * @param curPage
+	 * @param pageSize
+	 * @param keyword
+	 * @return
+	 * @since 2015年12月11日 上午10:12:34
+	 */
+	public Map<String, Object> getUserList(int curPage, int pageSize,
+			String keyword) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			Pager pager = new Pager();
+			int totalRecord = 0;
+			Condition cnd = null;
+			if (StringUtils.isBlank(keyword)) {
+				totalRecord = userDao.getCount(User.class, null);
+
+			} else {
+				cnd = Cnd.where("name", "like", "%" + keyword + "%").or(
+						"nickName", "like", "%" + keyword + "%");
+				totalRecord = userDao.getCount(User.class, cnd);
+			}
+			pager.setRecordCount(totalRecord);
+			if (curPage <= 0 || pageSize <= 0) {
+				pager.setPageNumber(1);
+				pager.setPageSize(Pager.DEFAULT_PAGE_SIZE);
+			} else {
+				pager.setPageNumber(curPage);
+				pager.setPageSize(pageSize);
+			}
+			resultMap.put("pager", pager);
+			List<User> recordList = userDao.queryAll(User.class, cnd, pager);
+			resultMap.put("recordList", recordList);
+			return resultMap;
+		} catch (Exception e) {
+			log.error("获取用户列表失败!", e);
+		}
+		return null;
 	}
 }

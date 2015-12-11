@@ -1,4 +1,3 @@
-/** 广州哇宝信息技术有限公司 */
 package com.gzwabao.action;
 
 import java.io.File;

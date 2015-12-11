@@ -6,7 +6,7 @@ var ioc = {
 			depose : "close"
 		},
 		fields : {
-			url : "jdbc:mysql://127.0.0.1:3306/nutz_back",
+			url : "jdbc:mysql://127.0.0.1:3306/nutzbook",
 			username : "root",
 			password : "root",
 			testWhileIdle : true,
