@@ -39,9 +39,9 @@ public class Module implements Serializable {
 	@ColDefine(type = ColType.INT, width = 32, notNull = true)
 	private int type;
 
-	@Column(value = "desc")
+	@Column(value = "decs")
 	@ColDefine(type = ColType.VARCHAR, width = 250, notNull = false)
-	private String desc;
+	private String decs;
 
 	@Column(value = "relate_ids")
 	@ColDefine(type = ColType.VARCHAR, width = 250, notNull = true)
@@ -99,12 +99,12 @@ public class Module implements Serializable {
 		this.type = type;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getDecs() {
+		return decs;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDecs(String decs) {
+		this.decs = decs;
 	}
 
 	public String getRelateIds() {

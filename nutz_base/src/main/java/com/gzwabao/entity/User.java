@@ -13,10 +13,11 @@ import org.nutz.dao.entity.annotation.Table;
 /**
  * 
  * @since 2015年11月5日 上午11:10:12
- * @author Administrator
+ * @author Alex
  */
 @Table(value = "user")
 public class User implements Serializable {
+	public static final String SESSION_USER = "session_user";
 	/**
 	 * 
 	 */
