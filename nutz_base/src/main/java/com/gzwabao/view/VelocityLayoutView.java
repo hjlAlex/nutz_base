@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -26,6 +25,7 @@ import org.nutz.mvc.config.AtMap;
 import org.nutz.mvc.view.AbstractPathView;
 
 import com.gzwabao.util.CacheUtil;
+import com.gzwabao.util.DateUtil;
 
 public class VelocityLayoutView extends AbstractPathView {
 
@@ -35,7 +35,7 @@ public class VelocityLayoutView extends AbstractPathView {
 	private final static String SUFFIX = ".html";
 
 	private static final StringUtils stringUtils = new StringUtils();
-	private static final DateUtils dateUtils = new DateUtils();
+	private static final DateUtil dateUtils = new DateUtil();
 
 	public VelocityLayoutView(String dest) {
 		super(dest);

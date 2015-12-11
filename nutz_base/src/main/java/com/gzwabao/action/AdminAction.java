@@ -33,6 +33,15 @@ public class AdminAction {
 	private UserService userService;
 
 	/**
+	 * 管理首页
+	 */
+	@At("/index")
+	@Ok("vm:template.admin.index")
+	public void adminMain() {
+
+	}
+
+	/**
 	 * 获取用户列表
 	 * 
 	 * @param curPage
@@ -74,6 +83,47 @@ public class AdminAction {
 	}
 
 	/**
+	 * 跳往更新页面
+	 * 
+	 * @param uid
+	 * @return
+	 */
+	@At("/update_user")
+	@Ok("vm:template.admin.update_user")
+	public User toUpdateAdmin(@Param("uid") int uid) {
+		// 仅仅为了返回一个页面，这个时候也可以给该页面初始化点东西
+		return userService.getUserById(uid);
+	}
+
+	/**
+	 * 更新用户
+	 * 
+	 * @param oldId
+	 * @param user
+	 * @return
+	 */
+	@At("/updateAdmin")
+	@Ok("raw:html")
+	public int updateAdmin(@Param("oldId") int oldId, @Param("..") User user) {
+		int status = userService.updateUserByOid(oldId, user);
+		return status;
+	}
+
+	/**
+	 * 更新用户
+	 * 
+	 * @param oldId
+	 * @param user
+	 * @return
+	 */
+	@At("/deleteAdmin")
+	@Ok("raw:html")
+	public int deleteAdmin(@Param("delId") int delId) {
+		int status = userService.delAdminById(delId);
+		return status;
+	}
+
+	/**
 	 * 获取验证码
 	 * 
 	 * @param req
@@ -95,11 +145,9 @@ public class AdminAction {
 	}
 
 	@At("/login")
-	@Ok("redirect:/admin/user_list.html?tip=${obj}")
+	@Ok("redirect:/admin/index.html?tip=${obj}")
 	public String login(@Param("name") String name,
 			@Param("password") String password, HttpServletRequest req) {
-
-		// req.getSession().setAttribute(User.SESSION_USER, "hjl");
-		return "user_not_exist!";
+		return userService.login(name, password, req);
 	}
 }

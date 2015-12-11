@@ -24,11 +24,23 @@ public class LoginFilter implements ActionFilter {
 			} else {
 				String loginTip = req.getParameter("tip");
 				if (StringUtils.isNotBlank(loginTip)) {
-					req.setAttribute("tip", loginTip);
+					req.setAttribute("tip", getProperties(loginTip));
 				}
 				return new VelocityLayoutView("template.login");
 			}
 		}
 	}
 
+	public String getProperties(String key) {
+		if (null == key) {
+			return null;
+		}
+		if (key.equals("user_not_exist")) {
+			return "用户不存在!";
+		}
+		if (key.equals("error_password")) {
+			return "密码错误!";
+		}
+		return null;
+	}
 }

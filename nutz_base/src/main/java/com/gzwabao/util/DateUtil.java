@@ -17,6 +17,15 @@ public class DateUtil {
 	public static final long NS = 1000;// 一秒钟的毫秒数
 
 	/**
+	 * 得到系统当前时间戳
+	 * 
+	 * @return
+	 */
+	public static long getNow() {
+		return System.currentTimeMillis();
+	}
+
+	/**
 	 * 格式 yyyy-MM-dd HH:mm:ss
 	 * 
 	 * @param date

@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -19,6 +21,7 @@ import org.nutz.log.Logs;
 
 import com.gzwabao.dao.UserDao;
 import com.gzwabao.entity.User;
+import com.gzwabao.util.MD5Utils;
 
 /**
  * @author Alex
@@ -52,6 +55,7 @@ public class UserService {
 				log.error("密码非法!");
 				return result;
 			}
+			user.setPassword(MD5Utils.MD5Encode(user.getPassword()));
 			user.setCreateTime(new Date());
 			user.setUpdateTime(new Date());
 			return userDao.save(user) != null ? 200 : 400;
@@ -147,5 +151,76 @@ public class UserService {
 			log.error("获取用户列表失败!", e);
 		}
 		return null;
+	}
+
+	/**
+	 * 用户登录
+	 * 
+	 * @param name
+	 * @param password
+	 * @param req
+	 * @return
+	 */
+	public String login(String name, String password, HttpServletRequest req) {
+		User user = userDao.getUserByNameOrNick(name);
+		if (null == user) {
+			return "user_not_exist";
+		}
+		if (!MD5Utils.MD5Encode(password).equals(user.getPassword())) {
+			return "error_password";
+		}
+		req.getSession().setAttribute(User.SESSION_USER, user);
+		return null;
+	}
+
+	/**
+	 * 更新用户
+	 * 
+	 * @param oldId
+	 * @param user
+	 * @return
+	 */
+	public int updateUserByOid(int oldId, User user) {
+		int result = 400;
+		try {
+			User oldUser = getUserById(oldId);
+			if (null == oldUser) {
+				log.error("用户不存在!");
+				return result;
+			}
+			if (StringUtils.isNotBlank(user.getNickName())) {
+				oldUser.setNickName(user.getNickName());
+			}
+			if (StringUtils.isNotBlank(user.getPassword())) {
+				oldUser.setPassword(MD5Utils.MD5Encode(user.getPassword()));
+			}
+			user.setUpdateTime(new Date());
+			return updateUser(oldUser) > 0 ? 200 : 400;
+		} catch (Exception e) {
+			log.error("新增用户失败!name=" + user.getName(), e);
+		}
+		return result;
+	}
+
+	/**
+	 * 根据id删除用户
+	 * 
+	 * @param delId
+	 * @return
+	 */
+	public int delAdminById(int delId) {
+		int result = 400;
+		try {
+			User oldUser = getUserById(delId);
+			if (null == oldUser) {
+				log.error("用户不存在!");
+				return result;
+			}
+
+			return userDao.deleteById(User.class, delId) > 0 ? 200 : 400;
+		} catch (Exception e) {
+			log.error("删除用户失败!id=" + delId, e);
+		}
+		return result;
 	}
 }

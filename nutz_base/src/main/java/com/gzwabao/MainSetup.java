@@ -1,4 +1,3 @@
-/** 广州哇宝信息技术有限公司 */
 package com.gzwabao;
 
 import java.io.IOException;
@@ -17,6 +16,7 @@ import org.nutz.mvc.NutConfig;
 import org.nutz.mvc.Setup;
 
 import com.gzwabao.entity.User;
+import com.gzwabao.util.MD5Utils;
 
 public class MainSetup implements Setup {
 	private static final Log log = Logs.getLog(MainSetup.class);
@@ -31,16 +31,18 @@ public class MainSetup implements Setup {
 			Dao dao = ioc.get(Dao.class, "dao");
 			Daos.createTablesInPackage(dao, "com.gzwabao.entity", false);
 
-			// 初始化默认根用户,并存入缓存
+			// 初始化默认根用户
 			if (dao.count(User.class) == 0) {
 				User user = new User();
 				user.setName("admin");
-				user.setPassword("123456");
+				user.setPassword(MD5Utils.MD5Encode("123456"));
 				user.setCreateTime(new Date());
 				user.setUpdateTime(new Date());
 				dao.insert(user);
 			}
+			// Velocity环境初始化
 			velocityInit(conf);
+			// 日常事务执行
 			Tasks.scheduleAtFixedRate(new Runnable() {
 				public void run() {
 					System.out.println("task runing...");
