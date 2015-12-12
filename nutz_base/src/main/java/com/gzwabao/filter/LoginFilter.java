@@ -35,6 +35,9 @@ public class LoginFilter implements ActionFilter {
 		if (null == key) {
 			return null;
 		}
+		if (key.equals("code_error")) {
+			return "验证码错误!";
+		}
 		if (key.equals("user_not_exist")) {
 			return "用户不存在!";
 		}

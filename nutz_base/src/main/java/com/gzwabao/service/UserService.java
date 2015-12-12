@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.nutz.dao.Cnd;
@@ -96,22 +97,6 @@ public class UserService {
 	}
 
 	/**
-	 * 通过id删除用户
-	 * 
-	 * @param id
-	 * @return
-	 * @since 2015年12月11日 上午9:54:51
-	 */
-	public int deleteUserById(int id) {
-		try {
-			return userDao.deleteById(User.class, id);
-		} catch (Exception e) {
-			log.error("删除用户失败!id=" + id, e);
-		}
-		return 0;
-	}
-
-	/**
 	 * 根据条件分页获取用户
 	 * 
 	 * @param curPage
@@ -161,7 +146,13 @@ public class UserService {
 	 * @param req
 	 * @return
 	 */
-	public String login(String name, String password, HttpServletRequest req) {
+	public String login(String name, String password, String code,
+			HttpServletRequest req) {
+		HttpSession session = req.getSession(true);
+		String sessionCode = (String) session.getAttribute(session.getId());
+		if (!sessionCode.equalsIgnoreCase(code)) {
+			return "code_error";
+		}
 		User user = userDao.getUserByNameOrNick(name);
 		if (null == user) {
 			return "user_not_exist";
@@ -194,7 +185,7 @@ public class UserService {
 			if (StringUtils.isNotBlank(user.getPassword())) {
 				oldUser.setPassword(MD5Utils.MD5Encode(user.getPassword()));
 			}
-			user.setUpdateTime(new Date());
+			oldUser.setUpdateTime(new Date());
 			return updateUser(oldUser) > 0 ? 200 : 400;
 		} catch (Exception e) {
 			log.error("新增用户失败!name=" + user.getName(), e);
@@ -220,6 +211,30 @@ public class UserService {
 			return userDao.deleteById(User.class, delId) > 0 ? 200 : 400;
 		} catch (Exception e) {
 			log.error("删除用户失败!id=" + delId, e);
+		}
+		return result;
+	}
+
+	/**
+	 * 批量删除用户
+	 * 
+	 * @param adminIds
+	 * @return
+	 * @since 2015年12月12日 下午12:49:23
+	 */
+	public int delMoreAdmin(String adminIds) {
+		int result = 400;
+		try {
+			if (StringUtils.isBlank(adminIds)) {
+				return result;
+			}
+			String[] delIds = adminIds.split(",");
+			for (String delId : delIds) {
+				userDao.deleteById(User.class, Integer.parseInt(delId));
+			}
+			return 200;
+		} catch (Exception e) {
+			log.error("删除用户失败!adminIds=" + adminIds, e);
 		}
 		return result;
 	}

@@ -26,9 +26,9 @@
 	<meta name="keywords" content="H-ui.admin v2.3,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
 	<meta name="description" content="H-ui.admin v2.3，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
 </head>
-#set($param = $request.getAttribute("array"))
+#set($login_user = $session.getAttribute("session_user"))
 <body>
-<header class="Hui-header cl"> <a class="Hui-logo l" title="H-ui.admin v2.3" href="/">H-ui.admin</a> <a class="Hui-logo-m l" href="/" title="H-ui.admin">H-ui</a> <span class="Hui-subtitle l">V2.3</span>
+<header class="Hui-header cl"> <a class="Hui-logo l" title="H-ui.admin v2.3" href="#">H-ui.admin</a> <a class="Hui-logo-m l" href="#" title="H-ui.admin">H-ui</a> <span class="Hui-subtitle l">V2.3</span>
 	<nav class="mainnav cl" id="Hui-nav">
 		<ul>
 			<li class="dropDown dropDown_click"><a href="javascript:;" class="dropDown_A"><i class="Hui-iconfont">&#xe600;</i> 新增 <i class="Hui-iconfont">&#xe6d5;</i></a>
@@ -42,8 +42,8 @@
 		</ul>
 	</nav>
 	<ul class="Hui-userbar">
-		<li>$param</li>
-		<li class="dropDown dropDown_hover"><a href="#" class="dropDown_A">admin <i class="Hui-iconfont">&#xe6d5;</i></a>
+		<li>欢迎您&nbsp;,</li>
+		<li class="dropDown dropDown_hover"><a href="#" class="dropDown_A">#if($login_user.nickName) $login_user.nickName #else $login_user.name #end <i class="Hui-iconfont">&#xe6d5;</i></a>
 			<ul class="dropDown-menu radius box-shadow">
 				<li><a href="#">个人信息</a></li>
 				<li><a href="#">切换账户</a></li>
@@ -66,14 +66,6 @@
 <aside class="Hui-aside">
 	<input runat="server" id="divScrollValue" type="hidden" value="" />
 	<div class="menu_dropdown bk_2">
-		<dl id="menu-article">
-			<dt><i class="Hui-iconfont">&#xe616;</i> 系统管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-			<dd>
-				<ul>
-					<li><a _href="user_list.html" href="javascript:void(0)">管理员管理</a></li>
-				</ul>
-			</dd>
-		</dl>
 		<dl id="menu-picture">
 			<dt><i class="Hui-iconfont">&#xe613;</i> 图片管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
@@ -92,34 +84,6 @@
 				</ul>
 			</dd>
 		</dl>
-		<!--<dl id="menu-page">
-			<dt><i class="Hui-iconfont">&#xe626;</i> 页面管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-			<dd>
-				<ul>
-					<li><a _href="page-home.html" href="javascript:void(0)">首页管理</a></li>
-					<li><a _href="page-flinks.html" href="javascript:void(0)">友情链接</a></li>
-				</ul>
-			</dd>
-		</dl>-->
-		<dl id="menu-comments">
-			<dt><i class="Hui-iconfont">&#xe622;</i> 评论管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-			<dd>
-				<ul>
-					<li><a _href="http://h-ui.duoshuo.com/admin/" href="javascript:;">评论列表</a></li>
-					<li><a _href="feedback-list.html" href="javascript:void(0)">意见反馈</a></li>
-				</ul>
-			</dd>
-		</dl>
-		<!--<dl id="menu-order">
-			<dt><i class="Hui-iconfont">&#xe63a;</i> 财务管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-			<dd>
-				<ul>
-					<li><a _href="order-list.html" href="javascript:void(0)">订单列表</a></li>
-					<li><a _href="recharge-list.html" href="javascript:void(0)">充值管理</a></li>
-					<li><a _href="invoice-list.html" href="javascript:void(0)">发票管理</a></li>
-				</ul>
-			</dd>
-		</dl>-->
 		<dl id="menu-member">
 			<dt><i class="Hui-iconfont">&#xe60d;</i> 会员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
@@ -134,39 +98,11 @@
 				</ul>
 			</dd>
 		</dl>
-		<dl id="menu-admin">
-			<dt><i class="Hui-iconfont">&#xe62d;</i> 管理员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-			<dd>
-				<ul>
-					<li><a _href="admin-role.html" href="javascript:void(0)">角色管理</a></li>
-					<li><a _href="admin-permission.html" href="javascript:void(0)">权限管理</a></li>
-					<li><a _href="admin-list.html" href="javascript:void(0)">管理员列表</a></li>
-				</ul>
-			</dd>
-		</dl>
-		<dl id="menu-tongji">
-			<dt><i class="Hui-iconfont">&#xe61a;</i> 系统统计<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-			<dd>
-				<ul>
-					<li><a _href="charts-1.html" href="javascript:void(0)">折线图</a></li>
-					<li><a _href="charts-2.html" href="javascript:void(0)">时间轴折线图</a></li>
-					<li><a _href="charts-3.html" href="javascript:void(0)">区域图</a></li>
-					<li><a _href="charts-4.html" href="javascript:void(0)">柱状图</a></li>
-					<li><a _href="charts-5.html" href="javascript:void(0)">饼状图</a></li>
-					<li><a _href="charts-6.html" href="javascript:void(0)">3D柱状图</a></li>
-					<li><a _href="charts-7.html" href="javascript:void(0)">3D饼状图</a></li>
-				</ul>
-			</dd>
-		</dl>
 		<dl id="menu-system">
 			<dt><i class="Hui-iconfont">&#xe62e;</i> 系统管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
-					<li><a _href="system-base.html" href="javascript:void(0)">系统设置</a></li>
-					<li><a _href="system-category.html" href="javascript:void(0)">栏目管理</a></li>
-					<li><a _href="system-data.html" href="javascript:void(0)">数据字典</a></li>
-					<li><a _href="system-shielding.html" href="javascript:void(0)">屏蔽词</a></li>
-					<li><a _href="system-log.html" href="javascript:void(0)">系统日志</a></li>
+					<li><a _href="user_list.html" href="javascript:void(0)">管理员管理</a></li>
 				</ul>
 			</dd>
 		</dl>

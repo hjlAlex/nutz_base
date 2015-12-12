@@ -110,7 +110,7 @@ public class AdminAction {
 	}
 
 	/**
-	 * 更新用户
+	 * 删除单个用户
 	 * 
 	 * @param oldId
 	 * @param user
@@ -120,6 +120,20 @@ public class AdminAction {
 	@Ok("raw:html")
 	public int deleteAdmin(@Param("delId") int delId) {
 		int status = userService.delAdminById(delId);
+		return status;
+	}
+
+	/**
+	 * 批量删除用户
+	 * 
+	 * @param adminIds
+	 * @return
+	 * @since 2015年12月12日 下午12:49:45
+	 */
+	@At("/deleteMoreAdmin")
+	@Ok("raw:html")
+	public int deleteMoreAdmin(@Param("adminIds") String adminIds) {
+		int status = userService.delMoreAdmin(adminIds);
 		return status;
 	}
 
@@ -147,7 +161,8 @@ public class AdminAction {
 	@At("/login")
 	@Ok("redirect:/admin/index.html?tip=${obj}")
 	public String login(@Param("name") String name,
-			@Param("password") String password, HttpServletRequest req) {
-		return userService.login(name, password, req);
+			@Param("password") String password, @Param("code") String code,
+			HttpServletRequest req) {
+		return userService.login(name, password, code, req);
 	}
 }
