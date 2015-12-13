@@ -19,45 +19,49 @@
 <script type="text/javascript" src="${base}/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<title>管理员列表</title>
+<title>前端页面列表</title>
 </head>
 #set($recordList = $obj.recordList)
 #set($pager = $obj.pager)
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>系统管理 <span class="c-gray en">&gt;</span>  管理员管理<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>页面管理 <span class="c-gray en">&gt;</span> 前端页面管理 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="pd-20">
 	<div class="text-r">
-		<form action="user_list" method="post">
-			<input type="text" class="input-text" style="width:250px" placeholder="输入账号或昵称" id="" name="keyword">
-			<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜管理员</button>
+		<form action="page_list" method="post">
+			<input type="text" class="input-text" style="width:250px" placeholder="输入strId或链接url" id="" name="keyword">
+			<button type="submit" class="btn btn-success" id=""><i class="Hui-iconfont">&#xe665;</i> 搜页面</button>
 		</form>
 	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="javascript:delUserMany();" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="admin_add('添加管理员','add_user.html','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a></span> <span class="r">共有数据：<strong>$pager.recordCount</strong> 条</span> </div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="javascript:delPageMany();" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="page_add('添加页面','add_page.html','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加页面</a></span> <span class="r">共有数据：<strong>$pager.recordCount</strong> 条</span> </div>
 	<table class="table table-border table-bordered table-bg">
 		<thead>
 			<tr>
-				<th scope="col" colspan="7">管理员列表</th>
+				<th scope="col" colspan="7">页面列表</th>
 			</tr>
 			<tr class="text-c">
-				<th width="25"><input id="chkAll" type="checkbox" name="" value=""></th>
+				<th width="25"><input id="chkAll" type="checkbox" value=""></th>
 				<th width="40">ID</th>
-				<th width="150">登录账号</th>
-				<th width="90">昵称</th>
-				<th width="130">加入时间</th>
-				<th width="130">更新时间</th>
+				<th width="150">字符串标识</th>
+				<th width="100">链接URL</th>
+				<th width="150">备注</th>
+				<th width="100">模块管理</th>
 				<th width="100">操作</th>
 			</tr>
 		</thead>
 		<tbody>
-			#foreach($user_obj in $recordList)
+			#foreach($page_obj in $recordList)
 			<tr class="text-c">
-				<td>#if(1 != ${user_obj.id})<input type="checkbox" name="adminId" value="${user_obj.id}" >#end</td>
-				<td>$!{user_obj.id}</td>
-				<td>$!{user_obj.name}</td>
-				<td>$!{user_obj.nickName}</td>
-				<td>$dateUtils.format($!{user_obj.createTime})</td>
-				<td>$dateUtils.format($!{user_obj.updateTime})</td>
-				<td class="td-manage"><a title="编辑" href="javascript:;" onclick="admin_edit('管理员编辑','update_user.html','$!{user_obj.id}','800','500')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> #if(1 != ${user_obj.id})<a title="删除" href="javascript:;" onclick="admin_del(this,'${user_obj.id}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>#end</td>
+				<td><input type="checkbox" name="pageId" value="${page_obj.id}" ></td>
+				<td>$!{page_obj.id}</td>
+				<td>$!{page_obj.strId}</td>
+				<td>$!{page_obj.locaUrl}</td>
+				<td>$!{page_obj.remark}</td>
+				<td><a href="javascript:;" onclick="javascript:;" class="btn btn-primary radius">模块管理</a></td>
+				<td class="td-manage">
+					<a title="编辑" href="javascript:;" onclick="page_edit('页面编辑','update_page.html','$!{page_obj.id}','800','500')" class="ml-6" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<a title="删除" href="javascript:;" onclick="page_del(this,'${page_obj.id}')" class="ml-6" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+				</td>
 			</tr>
 			#end
 		</tbody>
@@ -104,11 +108,11 @@
 <script type="text/javascript">
 $(function(){
 	$("#chkAll").click(function(e) {
-    	$("input[name='adminId']").prop("checked", $(this).prop("checked"));
+    	$("input[name='pageId']").prop("checked", $(this).prop("checked"));
     });
-    $("input[name='adminId']").click(function() {
+    $("input[name='pageId']").click(function() {
     	var state = true;
-    	$("input[name='adminId']").each(function(index, element) {
+    	$("input[name='pageId']").each(function(index, element) {
     		if (!($(this).prop("checked"))) {
     			state = false;
     		}
@@ -125,18 +129,18 @@ $(function(){
 	h		弹出层高度（缺省调默认值）
 */
 /*管理员-增加*/
-function admin_add(title,url,w,h){
+function page_add(title,url,w,h){
 	layer_show(title,url,w,h);
 }
 /*管理员-删除*/
-function admin_del(obj,delId){
+function page_del(obj,delId){
 	if(confirm('确认要删除吗？')){
 		$.ajax({
 			type: 'POST',
 			data: {
 				"delId":delId,
 			},
-			url: 'deleteAdmin',
+			url: 'deletePage',
             success: function (status) { 
             	if(200 == status){
             		alert("删除成功!");
@@ -150,22 +154,22 @@ function admin_del(obj,delId){
 	}
 }
 
-function delUserMany(){
-	var adminIds = "";
-	$("input[name='adminId']").each(function(index, element) {
+function delPageMany(){
+	var pageIds = "";
+	$("input[name='pageId']").each(function(index, element) {
 		if ($(this).prop("checked")) {
-			adminIds = adminIds+$(this).val()+","; 
+			pageIds = pageIds+$(this).val()+","; 
 		}
 	});
-	if("" != adminIds){
-		adminIds = adminIds.substring(0,adminIds.length-1);
+	if("" != pageIds){
+		pageIds = pageIds.substring(0,pageIds.length-1);
 		if(confirm('确认要删除吗？')){
 			$.ajax({
 				type: 'POST',
 				data: {
-					"adminIds":adminIds,
+					"pageIds":pageIds,
 				},
-				url: 'deleteMoreAdmin',
+				url: 'deleteMorePage',
 	            success: function (status) { 
 	            	if(200 == status){
 	            		alert("删除成功!");
@@ -183,14 +187,14 @@ function delUserMany(){
 	
 }
 /*管理员-编辑*/
-function admin_edit(title,url,uid,w,h){
-	url = url + "?uid=" + uid;
+function page_edit(title,url,pid,w,h){
+	url = url + "?pid=" + pid;
 	layer_show(title,url,w,h);
 }
 
 function refresh(){
 	var temp = document.createElement("form");        
-    temp.action = "user_list";        
+    temp.action = "page_list";        
     temp.method = "post";        
     temp.style.display = "none";
     var params = {"curPage":'$!pager.pageNumber',"pageSize":'$!pager.pageSize',"keyword":'$!p.keyword'};
@@ -206,7 +210,7 @@ function refresh(){
 
 function goPage(curPage,pageSize) {
     var temp = document.createElement("form");        
-    temp.action = "user_list";        
+    temp.action = "page_list";        
     temp.method = "post";        
     temp.style.display = "none";
     var params = {"curPage":curPage,"pageSize":pageSize,"keyword":'$!p.keyword'};

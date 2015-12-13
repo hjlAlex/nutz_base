@@ -6,42 +6,28 @@ import org.nutz.dao.entity.annotation.ColDefine;
 import org.nutz.dao.entity.annotation.ColType;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
-import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Table;
 
 /**
+ * 前端图片
  * 
- * @since 2015年12月11日 上午11:10:12
+ * @since 2015年11月5日 上午11:10:12
  * @author Alex
  */
-@Table(value = "module")
-public class Module implements Serializable {
-	/**
-	 * 
-	 */
+@Table(value = "picture")
+public class Picture implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id(auto = true)
 	// id主键,自增
 	private int id;
 
-	@Name(casesensitive = true)
-	// 字符型主键,大小写敏感
-	@Column(value = "str_flag")
-	@ColDefine(type = ColType.VARCHAR, width = 50, notNull = true)
-	private String strFlag;
-
-	// 所属页面Id
-	@Column(value = "page_id")
-	@ColDefine(type = ColType.INT, width = 32, notNull = true)
-	private int pageId;
-
-	@Column(value = "type")
-	@ColDefine(type = ColType.INT, width = 32, notNull = true)
-	private int type;
-
-	@Column(value = "relate_ids")
+	@Column(value = "path")
 	@ColDefine(type = ColType.VARCHAR, width = 250, notNull = true)
-	private String relateIds;
+	private String path;
+
+	@Column(value = "name")
+	@ColDefine(type = ColType.VARCHAR, width = 50, notNull = false)
+	private String name;
 
 	@Column(value = "remark")
 	@ColDefine(type = ColType.VARCHAR, width = 250, notNull = false)
@@ -75,36 +61,20 @@ public class Module implements Serializable {
 		this.id = id;
 	}
 
-	public String getStrFlag() {
-		return strFlag;
+	public String getPath() {
+		return path;
 	}
 
-	public void setStrFlag(String strFlag) {
-		this.strFlag = strFlag;
+	public void setPath(String path) {
+		this.path = path;
 	}
 
-	public int getPageId() {
-		return pageId;
+	public String getName() {
+		return name;
 	}
 
-	public void setPageId(int pageId) {
-		this.pageId = pageId;
-	}
-
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
-
-	public String getRelateIds() {
-		return relateIds;
-	}
-
-	public void setRelateIds(String relateIds) {
-		this.relateIds = relateIds;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getRemark() {

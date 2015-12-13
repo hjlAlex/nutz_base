@@ -1,0 +1,159 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="${base}/lib/html5.js?now=$dateUtils.getNow()"></script>
+<script type="text/javascript" src="${base}/lib/respond.min.js?now=$dateUtils.getNow()"></script>
+<script type="text/javascript" src="${base}/lib/PIE_IE678.js?now=$dateUtils.getNow()"></script>
+<![endif]-->
+<link href="${base}/css/H-ui.min.css?now=$dateUtils.getNow()" rel="stylesheet" type="text/css" />
+<link href="${base}/css/H-ui.admin.css?now=$dateUtils.getNow()" rel="stylesheet" type="text/css" />
+<link href="${base}/css/style.css?now=$dateUtils.getNow()" rel="stylesheet" type="text/css" />
+<link href="${base}/lib/Hui-iconfont/1.0.1/iconfont.css?now=$dateUtils.getNow()" rel="stylesheet" type="text/css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>图片列表</title>
+</head>
+#set($recordList = $obj.recordList)
+#set($pager = $obj.pager)
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 图片管理 <span class="c-gray en">&gt;</span> 图片列表 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="pd-20">
+	<div class="text-r">
+		<form action="page_list" method="post">
+			<input type="text" class="input-text" style="width:250px" placeholder="输入图片名称" id="" name="keyword">
+			<button type="submit" class="btn btn-success" id=""><i class="Hui-iconfont">&#xe665;</i> 搜图片</button>
+		</form>
+	</div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="javascript:delPictureMany();" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="picture_add('添加图片','add_picture.html')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加图片</a></span> <span class="r">共有数据：<strong>$pager.recordCount</strong> 条</span> </div>
+	<table class="table table-border table-bordered table-bg">
+		<thead>
+			<tr>
+				<th scope="col" colspan="6">图片列表</th>
+			</tr>
+			<tr class="text-c">
+				<th width="25"><input id="chkAll" type="checkbox" value=""></th>
+				<th width="40">ID</th>
+				<th width="100">图片名称</th>
+				<th width="100">图片路径</th>
+				<th width="150">备注</th>
+				<th width="100">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($pic_obj in $recordList)
+			<tr class="text-c">
+				<td><input type="checkbox" name="pId" value="${pic_obj.id}" ></td>
+				<td>$!{pic_obj.id}</td>
+				<td>$!{pic_obj.name}</td>
+				<td>$!{pic_obj.path}</td>
+				<td>$!{page_obj.remark}</td>
+				<td class="td-manage">
+					<a title="编辑" href="javascript:;" onclick="page_edit('页面编辑','update_page.html','$!{page_obj.id}','800','500')" class="ml-6" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<a title="删除" href="javascript:;" onclick="page_del(this,'${page_obj.id}')" class="ml-6" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+				</td>
+			</tr>
+			#end
+		</tbody>
+		<thead>
+			<tr>
+				<td scope="col" colspan="6" style="text-align: center;">
+					#set($curPage = ${pager.pageNumber})
+					#if($pager.pageCount <= 1 && $pager.pageNumber == 1)
+						<a class="btn btn-primary radius">首页</a>
+					#else
+						<a href="javascript:;" onclick="javascript:goPage(1,${pager.pageSize});" class="btn btn-primary radius">首页</a>
+					#end
+					
+					#if($pager.pageCount > 1 && $pager.pageNumber > 1)
+						&nbsp;&nbsp;
+						#set($curPage = ${pager.pageNumber} - 1)
+						<a href="javascript:;" onclick="javascript:goPage($curPage,${pager.pageSize});" class="btn btn-primary radius">上一页</a>
+					#end
+					
+					#if($pager.pageCount >1 && $pager.pageNumber != $pager.pageCount)
+						&nbsp;&nbsp;
+						#set($curPage = ${pager.pageNumber} + 1)
+						<a href="javascript:;" onclick="javascript:goPage($curPage,${pager.pageSize});" class="btn btn-primary radius">下一页</a>
+					#end
+					&nbsp;&nbsp;
+					#if($pager.pageNumber == $pager.pageCount)
+						<a class="btn btn-primary radius">尾页</a>
+					#elseif($pager.pageCount > 1)
+						<a href="javascript:;" onclick="javascript:goPage($pager.pageCount,$pager.pageSize);" class="btn btn-primary radius">尾页</a>
+					#end
+					&nbsp;&nbsp;
+					<a class="btn btn-primary radius" style="text-decoration: none;">当前第&nbsp;$pager.pageNumber&nbsp;页&nbsp;&nbsp;共&nbsp;$pager.pageCount&nbsp;页<a>
+				</td>
+			</tr>
+		</thead>
+	</table>
+</div>
+<script type="text/javascript" src="${base}/lib/jquery/1.9.1/jquery.min.js?now=$dateUtils.getNow()"></script> 
+<script type="text/javascript" src="${base}/lib/layer/1.9.3/layer.js?now=$dateUtils.getNow()"></script> 
+<script type="text/javascript" src="${base}/lib/My97DatePicker/WdatePicker.js?now=$dateUtils.getNow()"></script> 
+<script type="text/javascript" src="${base}/lib/datatables/1.10.0/jquery.dataTables.min.js?now=$dateUtils.getNow()"></script> 
+<script type="text/javascript" src="${base}/js/H-ui.js?now=$dateUtils.getNow()"></script> 
+<script type="text/javascript" src="${base}/js/H-ui.admin.js?now=$dateUtils.getNow()"></script> 
+<script type="text/javascript">
+$(function(){
+	$("#chkAll").click(function(e) {
+    	$("input[name='pId']").prop("checked", $(this).prop("checked"));
+    });
+    $("input[name='pId']").click(function() {
+    	var state = true;
+    	$("input[name='pId']").each(function(index, element) {
+    		if (!($(this).prop("checked"))) {
+    			state = false;
+    		}
+    	});
+    	$("#chkAll").prop("checked", state);
+    });  
+});
+/*图片-添加*/
+function picture_add(title,url){
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
+}
+/*图片-查看*/
+function picture_show(title,url,id){
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
+}
+
+
+/*图片-编辑*/
+function picture_edit(title,url,id){
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
+}
+/*图片-删除*/
+function picture_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		$(obj).parents("tr").remove();
+		layer.msg('已删除!',{icon:1,time:1000});
+	});
+}
+</script>
+</body>
+</html>

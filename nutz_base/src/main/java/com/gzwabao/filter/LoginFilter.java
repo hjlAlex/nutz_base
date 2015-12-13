@@ -26,7 +26,7 @@ public class LoginFilter implements ActionFilter {
 				if (StringUtils.isNotBlank(loginTip)) {
 					req.setAttribute("tip", getProperties(loginTip));
 				}
-				return new VelocityLayoutView("template.login");
+				return new VelocityLayoutView("template.admin.login");
 			}
 		}
 	}

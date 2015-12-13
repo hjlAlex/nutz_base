@@ -188,7 +188,7 @@ public class UserService {
 			oldUser.setUpdateTime(new Date());
 			return updateUser(oldUser) > 0 ? 200 : 400;
 		} catch (Exception e) {
-			log.error("新增用户失败!name=" + user.getName(), e);
+			log.error("更新用户失败!name=" + user.getName(), e);
 		}
 		return result;
 	}
@@ -205,6 +205,10 @@ public class UserService {
 			User oldUser = getUserById(delId);
 			if (null == oldUser) {
 				log.error("用户不存在!");
+				return result;
+			}
+
+			if (1 == delId) {// 超管不许删
 				return result;
 			}
 
@@ -237,5 +241,20 @@ public class UserService {
 			log.error("删除用户失败!adminIds=" + adminIds, e);
 		}
 		return result;
+	}
+
+	/**
+	 * 登出
+	 * 
+	 * @param req
+	 */
+	public void logout(HttpServletRequest req) {
+		if (req.getSession().getAttribute(User.SESSION_USER) != null) {
+			req.getSession().removeAttribute(User.SESSION_USER);
+		}
+		String sessionId = req.getSession().getId();
+		if (req.getSession().getAttribute(sessionId) != null) {
+			req.getSession().removeAttribute(sessionId);
+		}
 	}
 }

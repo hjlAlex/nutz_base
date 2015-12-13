@@ -1,47 +1,42 @@
 package com.gzwabao.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.nutz.dao.entity.annotation.ColDefine;
 import org.nutz.dao.entity.annotation.ColType;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
-import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Table;
 
 /**
+ * 前端资讯
  * 
- * @since 2015年12月11日 上午11:10:12
+ * @since 2015年11月5日 上午11:10:12
  * @author Alex
  */
-@Table(value = "module")
-public class Module implements Serializable {
-	/**
-	 * 
-	 */
+@Table(value = "news")
+public class News implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id(auto = true)
 	// id主键,自增
 	private int id;
 
-	@Name(casesensitive = true)
-	// 字符型主键,大小写敏感
-	@Column(value = "str_flag")
+	@Column(value = "title")
 	@ColDefine(type = ColType.VARCHAR, width = 50, notNull = true)
-	private String strFlag;
+	private String title;
 
-	// 所属页面Id
-	@Column(value = "page_id")
-	@ColDefine(type = ColType.INT, width = 32, notNull = true)
-	private int pageId;
+	@Column(value = "content")
+	@ColDefine(type = ColType.VARCHAR, width = 1024, notNull = true)
+	private String content;
 
-	@Column(value = "type")
-	@ColDefine(type = ColType.INT, width = 32, notNull = true)
-	private int type;
+	@Column(value = "create_time")
+	@ColDefine(type = ColType.DATETIME, notNull = true)
+	private Date createTime;
 
-	@Column(value = "relate_ids")
-	@ColDefine(type = ColType.VARCHAR, width = 250, notNull = true)
-	private String relateIds;
+	@Column(value = "update_time")
+	@ColDefine(type = ColType.DATETIME, notNull = true)
+	private Date updateTime;
 
 	@Column(value = "remark")
 	@ColDefine(type = ColType.VARCHAR, width = 250, notNull = false)
@@ -75,36 +70,36 @@ public class Module implements Serializable {
 		this.id = id;
 	}
 
-	public String getStrFlag() {
-		return strFlag;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setStrFlag(String strFlag) {
-		this.strFlag = strFlag;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public int getPageId() {
-		return pageId;
+	public String getContent() {
+		return content;
 	}
 
-	public void setPageId(int pageId) {
-		this.pageId = pageId;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
-	public int getType() {
-		return type;
+	public Date getCreateTime() {
+		return createTime;
 	}
 
-	public void setType(int type) {
-		this.type = type;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
-	public String getRelateIds() {
-		return relateIds;
+	public Date getUpdateTime() {
+		return updateTime;
 	}
 
-	public void setRelateIds(String relateIds) {
-		this.relateIds = relateIds;
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
 	}
 
 	public String getRemark() {

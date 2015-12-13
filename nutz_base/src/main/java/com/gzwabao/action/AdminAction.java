@@ -14,8 +14,11 @@ import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
+import com.gzwabao.entity.Page;
 import com.gzwabao.entity.User;
 import com.gzwabao.filter.LoginFilter;
+import com.gzwabao.service.PageService;
+import com.gzwabao.service.PictureService;
 import com.gzwabao.service.UserService;
 import com.gzwabao.util.CodeUtil;
 
@@ -32,6 +35,12 @@ public class AdminAction {
 	@Inject(value = "userService")
 	private UserService userService;
 
+	@Inject(value = "pageService")
+	private PageService pageService;
+
+	@Inject(value = "pictureService")
+	private PictureService pictureService;
+
 	/**
 	 * 管理首页
 	 */
@@ -41,6 +50,7 @@ public class AdminAction {
 
 	}
 
+	// =============用户业务相关开始=============
 	/**
 	 * 获取用户列表
 	 * 
@@ -158,11 +168,131 @@ public class AdminAction {
 		return bimage;
 	}
 
+	/**
+	 * 登录
+	 * 
+	 * @param name
+	 * @param password
+	 * @param code
+	 * @param req
+	 * @return
+	 */
 	@At("/login")
 	@Ok("redirect:/admin/index.html?tip=${obj}")
 	public String login(@Param("name") String name,
 			@Param("password") String password, @Param("code") String code,
 			HttpServletRequest req) {
 		return userService.login(name, password, code, req);
+	}
+
+	/**
+	 * 登出
+	 * 
+	 * @param req
+	 */
+	@At("/logout")
+	@Ok("vm:template.admin.login")
+	public void logout(HttpServletRequest req) {
+		userService.logout(req);
+	}
+
+	// =============用户业务相关结束=============
+
+	// =============页面业务相关开始=============
+	@At("/add_page")
+	@Ok("vm:template.admin.add_page")
+	public void toCreatePage() {
+		// 仅仅为了返回一个页面，这个时候也可以给该页面初始化点东西
+	}
+
+	/**
+	 * 添加用户
+	 * 
+	 * @param user
+	 * @return
+	 * @since 2015年12月11日 下午5:52:47
+	 */
+	@At("/addPage")
+	@Ok("raw:html")
+	public int addPage(@Param("..") Page page) {
+		int status = pageService.addPage(page);
+		return status;
+	}
+
+	/**
+	 * 获取前端所有页面
+	 * 
+	 * @param curPage
+	 * @param pageSize
+	 * @param keyword
+	 * @return
+	 */
+	@At("/page_list")
+	@Ok("vm:template.admin.page_list")
+	public Map<String, Object> getPageList(@Param("curPage") int curPage,
+			@Param("pageSize") int pageSize, @Param("keyword") String keyword) {
+		return pageService.getPageList(curPage, pageSize, keyword);
+	}
+
+	/**
+	 * 跳往更新页面
+	 * 
+	 * @param uid
+	 * @return
+	 */
+	@At("/update_page")
+	@Ok("vm:template.admin.update_page")
+	public Page toUpdatePage(@Param("pid") int pid) {
+		// 仅仅为了返回一个页面，这个时候也可以给该页面初始化点东西
+		return pageService.getPageById(pid);
+	}
+
+	/**
+	 * 更新页面
+	 * 
+	 * @param oldId
+	 * @param page
+	 * @return
+	 */
+	@At("/updatePage")
+	@Ok("raw:html")
+	public int updatePage(@Param("oldId") int oldId, @Param("..") Page page) {
+		int status = pageService.updatePageByOid(oldId, page);
+		return status;
+	}
+
+	/**
+	 * 删除页面
+	 * 
+	 * @param delId
+	 * @return
+	 */
+	@At("/deletePage")
+	@Ok("raw:html")
+	public int deletePage(@Param("delId") int delId) {
+		int status = pageService.delPageById(delId);
+		return status;
+	}
+
+	/**
+	 * 删除多个页面
+	 * 
+	 * @param pageIds
+	 * @return
+	 */
+	@At("/deleteMorePage")
+	@Ok("raw:html")
+	public int deleteMorePage(@Param("pageIds") String pageIds) {
+		int status = pageService.delMorePage(pageIds);
+		return status;
+	}
+
+	// =============页面业务相关结束=============
+
+	@At("/picture_list")
+	@Ok("vm:template.admin.picture_list")
+	public Map<String, Object> getPictureList(@Param("curPage") int curPage,
+			@Param("pageSize") int pageSize, @Param("keyword") String keyword) {
+		return pictureService.getPictureList(curPage, pageSize, keyword);
 	}
 }

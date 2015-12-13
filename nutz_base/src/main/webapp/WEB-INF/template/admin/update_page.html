@@ -19,30 +19,30 @@
 <script type="text/javascript" src="${base}/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<title>更新管理员</title>
+<title>更新页面</title>
 </head>
-#set($user_obj = $obj)
+#set($page_obj = $obj)
 <body>
 <div class="pd-20">
-	<form action="" method="post" class="form form-horizontal" id="form-admin-add">
+	<form action="" method="post" class="form form-horizontal" id="form-page-update">
 		<div class="row cl">
-			<label class="form-label col-3"><span class="c-red">*(不能改)</span>登录账号：</label>
+			<label class="form-label col-3"><span class="c-red">*</span>字符串标识：</label>
 			<div class="formControls col-5">
-				<input type="text" class="input-text" value="$!{user_obj.name}" placeholder="" id="user-name" name="name" datatype="*2-16" nullmsg="用户名不能为空" disabled="disabled">
+				<input type="text" class="input-text" value="$!{page_obj.strId}" placeholder="" id="strId" name="strId" datatype="*2-16" nullmsg="字符串标识不能为空">
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-3"><span class="c-red">*(可修改)</span>显示昵称：</label>
+			<label class="form-label col-3"><span class="c-red">*</span>链接URL：</label>
 			<div class="formControls col-5">
-				<input type="text" class="input-text" value="$!{user_obj.nickName}" placeholder="新昵称" id="user-nick" name="nickName" datatype="*0-16" nullmsg="昵称不能为空">
+				<input type="text" class="input-text" value="$!{page_obj.locaUrl}" placeholder="" id="locaUrl" name="locaUrl" datatype="*2-16" nullmsg="链接地址不能为空">
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-3"><span class="c-red">*(可修改)</span>新的密码：</label>
+			<label class="form-label col-3"><span class="c-grey">*</span>备注：</label>
 			<div class="formControls col-5">
-				<input type="password" id="password" placeholder="新的密码" autocomplete="off" value="" class="input-text" datatype="*0-20" nullmsg="密码不能为空">
+				<input type="text" class="input-text" value="$!{page_obj.remark}" placeholder="" id="remark" name="remark" datatype="*0-250">
 			</div>
 			<div class="col-4"> </div>
 		</div>
@@ -67,17 +67,18 @@ $(function(){
 		increaseArea: '20%'
 	});
 	
-	$("#form-admin-add").Validform({
+	$("#form-page-update").Validform({
 		tiptype:2,
 		callback:function(form){
 			$.ajax({
 				type: 'POST',
 				data: {
-					"oldId":"$!user_obj.id",
-					"nickName":$("#user-nick").val(),
-					"password":$("#password").val()
+					"oldId":"$!page_obj.id",
+					"strId":$("#strId").val(),
+					"locaUrl":$("#locaUrl").val(),
+					"remark":$("#remark").val(),
 				},
-				url: 'updateAdmin',
+				url: 'updatePage',
 	            success: function (status) { 
 	            	if(200 == status){
 	            		alert("修改成功!");

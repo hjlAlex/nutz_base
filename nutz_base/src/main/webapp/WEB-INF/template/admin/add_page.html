@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
 <meta name="renderer" content="webkit|ie-comp|ie-stand">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
@@ -19,30 +20,29 @@
 <script type="text/javascript" src="${base}/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<title>更新管理员</title>
+<title>添加页面</title>
 </head>
-#set($user_obj = $obj)
 <body>
 <div class="pd-20">
-	<form action="" method="post" class="form form-horizontal" id="form-admin-add">
+	<form action="" method="post" class="form form-horizontal" id="form-page-add">
 		<div class="row cl">
-			<label class="form-label col-3"><span class="c-red">*(不能改)</span>登录账号：</label>
+			<label class="form-label col-3"><span class="c-red">*</span>字符串标识：</label>
 			<div class="formControls col-5">
-				<input type="text" class="input-text" value="$!{user_obj.name}" placeholder="" id="user-name" name="name" datatype="*2-16" nullmsg="用户名不能为空" disabled="disabled">
+				<input type="text" class="input-text" value="" placeholder="" id="strId" name="strId" datatype="*2-16" nullmsg="字符串标识不能为空">
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-3"><span class="c-red">*(可修改)</span>显示昵称：</label>
+			<label class="form-label col-3"><span class="c-red">*</span>链接Url：</label>
 			<div class="formControls col-5">
-				<input type="text" class="input-text" value="$!{user_obj.nickName}" placeholder="新昵称" id="user-nick" name="nickName" datatype="*0-16" nullmsg="昵称不能为空">
+				<input type="text" class="input-text" value="" placeholder="" id="locaUrl" name="locaUrl" datatype="*2-50" nullmsg="链接Url不能为空">
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-3"><span class="c-red">*(可修改)</span>新的密码：</label>
+			<label class="form-label col-3"><span class="c-grey">*</span>备注：</label>
 			<div class="formControls col-5">
-				<input type="password" id="password" placeholder="新的密码" autocomplete="off" value="" class="input-text" datatype="*0-20" nullmsg="密码不能为空">
+				<input type="text" class="input-text" value="" placeholder="" id="remark" name="remark" datatype="*0-250">
 			</div>
 			<div class="col-4"> </div>
 		</div>
@@ -67,25 +67,25 @@ $(function(){
 		increaseArea: '20%'
 	});
 	
-	$("#form-admin-add").Validform({
+	$("#form-page-add").Validform({
 		tiptype:2,
 		callback:function(form){
 			$.ajax({
 				type: 'POST',
 				data: {
-					"oldId":"$!user_obj.id",
-					"nickName":$("#user-nick").val(),
-					"password":$("#password").val()
+					"strId":$("#strId").val(),
+					"locaUrl":$("#locaUrl").val(),
+					"remark":$("#remark").val(),
 				},
-				url: 'updateAdmin',
+				url: 'addPage',
 	            success: function (status) { 
 	            	if(200 == status){
-	            		alert("修改成功!");
+	            		alert("添加成功!");
 		            	var index = parent.layer.getFrameIndex(window.name);
 		    			parent.refresh();
 		    			parent.layer.close(index);
 	            	}else{
-	            		alert("修改失败!");
+	            		alert("添加失败!");
 	            	}
 	            	
 	            }

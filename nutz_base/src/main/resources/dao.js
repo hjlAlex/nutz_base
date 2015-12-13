@@ -6,9 +6,9 @@ var ioc = {
 			depose : "close"
 		},
 		fields : {
-			url : "jdbc:mysql://127.0.0.1:3306/nutzbook",
+			url : "jdbc:mysql://566ce6da3f270.gz.cdb.myqcloud.com:7000/test?useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false",
 			username : "root",
-			password : "root",
+			password : "qw238778400",
 			testWhileIdle : true,
 			validationQuery : "select 1",
 			maxActive : 100,
