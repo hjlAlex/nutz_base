@@ -22,7 +22,7 @@ public class Picture implements Serializable {
 	private int id;
 
 	@Column(value = "path")
-	@ColDefine(type = ColType.VARCHAR, width = 250, notNull = true)
+	@ColDefine(type = ColType.VARCHAR, width = 250, notNull = false)
 	private String path;
 
 	@Column(value = "name")

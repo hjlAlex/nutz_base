@@ -27,7 +27,7 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 图片管理 <span class="c-gray en">&gt;</span> 图片列表 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="pd-20">
 	<div class="text-r">
-		<form action="page_list" method="post">
+		<form action="picture_list" method="post">
 			<input type="text" class="input-text" style="width:250px" placeholder="输入图片名称" id="" name="keyword">
 			<button type="submit" class="btn btn-success" id=""><i class="Hui-iconfont">&#xe665;</i> 搜图片</button>
 		</form>
@@ -153,6 +153,21 @@ function picture_del(obj,id){
 		$(obj).parents("tr").remove();
 		layer.msg('已删除!',{icon:1,time:1000});
 	});
+}
+function refresh(){
+	var temp = document.createElement("form");        
+    temp.action = "picture_list";        
+    temp.method = "post";        
+    temp.style.display = "none";
+    var params = {"curPage":'$!pager.pageNumber',"pageSize":'$!pager.pageSize',"keyword":'$!p.keyword'};
+    for (var x in params) {
+        var opt = document.createElement("textarea");        
+        opt.name = x;        
+        opt.value = params[x];
+        temp.appendChild(opt);        
+    }
+    document.body.appendChild(temp);        
+    temp.submit();  
 }
 </script>
 </body>

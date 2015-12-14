@@ -8,13 +8,17 @@ import javax.servlet.http.HttpSession;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.By;
 import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.upload.TempFile;
+import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.gzwabao.entity.Page;
+import com.gzwabao.entity.Picture;
 import com.gzwabao.entity.User;
 import com.gzwabao.filter.LoginFilter;
 import com.gzwabao.service.PageService;
@@ -289,10 +293,34 @@ public class AdminAction {
 
 	// =============页面业务相关结束=============
 
+	// =============图片业务相关开始=============
 	@At("/picture_list")
 	@Ok("vm:template.admin.picture_list")
 	public Map<String, Object> getPictureList(@Param("curPage") int curPage,
 			@Param("pageSize") int pageSize, @Param("keyword") String keyword) {
 		return pictureService.getPictureList(curPage, pageSize, keyword);
 	}
+
+	@At("/add_picture")
+	@Ok("vm:template.admin.add_picture")
+	public void toAddPicture() {
+		// 仅仅为了返回一个页面，这个时候也可以给该页面初始化点东西
+	}
+
+	/**
+	 * 添加图片
+	 * 
+	 * @param tf
+	 * @param picture
+	 * @param req
+	 * @return
+	 */
+	@At("/addPicture")
+	@Ok("vm:template.admin.add_picture")
+	@AdaptBy(type = UploadAdaptor.class, args = { "${app.root}/WEB-INF/tmp" })
+	public String addPicture(@Param("image") TempFile tf,
+			@Param("..") Picture picture, HttpServletRequest req) {
+		return pictureService.addPicture(tf, picture, req);
+	}
+
 }
