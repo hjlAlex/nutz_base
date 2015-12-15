@@ -41,7 +41,7 @@
 			<tr class="text-c">
 				<th width="25"><input id="chkAll" type="checkbox" value=""></th>
 				<th width="40">ID</th>
-				<th width="100">图片名称</th>
+				<th width="100">缩略图</th>
 				<th width="100">图片路径</th>
 				<th width="150">备注</th>
 				<th width="100">操作</th>
@@ -52,13 +52,16 @@
 			<tr class="text-c">
 				<td><input type="checkbox" name="pId" value="${pic_obj.id}" ></td>
 				<td>$!{pic_obj.id}</td>
-				<td>$!{pic_obj.name}</td>
+				<td>
+					<div><img style="width: 90px;height: 90px;" alt="$!{pic_obj.name}" src="${base}$!{pic_obj.path}" class="radius" onclick="javascript:picture_show('$!{pic_obj.name}','${base}$!{pic_obj.path}');"></div>
+					<div>$!{pic_obj.name}</div>
+				</td>
 				<td>$!{pic_obj.path}</td>
-				<td>$!{page_obj.remark}</td>
+				<td>$!{pic_obj.remark}</td>
 				<td class="td-manage">
 					<a title="编辑" href="javascript:;" onclick="page_edit('页面编辑','update_page.html','$!{page_obj.id}','800','500')" class="ml-6" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
 					&nbsp;&nbsp;&nbsp;&nbsp;
-					<a title="删除" href="javascript:;" onclick="page_del(this,'${page_obj.id}')" class="ml-6" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+					<a title="删除" href="javascript:;" onclick="picture_del(this,'${pic_obj.id}')" class="ml-6" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
 				</td>
 			</tr>
 			#end
@@ -128,7 +131,7 @@ function picture_add(title,url){
 	layer.full(index);
 }
 /*图片-查看*/
-function picture_show(title,url,id){
+function picture_show(title,url){
 	var index = layer.open({
 		type: 2,
 		title: title,
@@ -148,11 +151,57 @@ function picture_edit(title,url,id){
 	layer.full(index);
 }
 /*图片-删除*/
-function picture_del(obj,id){
+function picture_del(obj,delId){
 	layer.confirm('确认要删除吗？',function(index){
-		$(obj).parents("tr").remove();
-		layer.msg('已删除!',{icon:1,time:1000});
+		$.ajax({
+			type: 'POST',
+			data: {
+				"delId":delId,
+			},
+			url: 'deletePicture',
+            success: function (status) { 
+            	if(200 == status){
+            		alert("删除成功!");
+            		refresh();
+            	}else{
+            		alert("删除失败!");
+            	}
+            	
+            }
+        });
 	});
+}
+function delPictureMany(){
+	var pIds = "";
+	$("input[name='pId']").each(function(index, element) {
+		if ($(this).prop("checked")) {
+			pIds = pIds+$(this).val()+","; 
+		}
+	});
+	if("" != pIds){
+		pIds = pIds.substring(0,pIds.length-1);
+		if(confirm('确认要删除吗？')){
+			$.ajax({
+				type: 'POST',
+				data: {
+					"pIds":pIds,
+				},
+				url: 'deleteMorePicture',
+	            success: function (status) { 
+	            	if(200 == status){
+	            		alert("删除成功!");
+	            		refresh();
+	            	}else{
+	            		alert("删除失败!");
+	            	}
+	            	
+	            }
+	        });
+		}
+	}else{
+		alert("未选择任何id!");
+	}
+	
 }
 function refresh(){
 	var temp = document.createElement("form");        

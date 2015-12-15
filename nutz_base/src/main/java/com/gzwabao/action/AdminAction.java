@@ -323,4 +323,30 @@ public class AdminAction {
 		return pictureService.addPicture(tf, picture, req);
 	}
 
+	/**
+	 * 根据id删除图片
+	 * 
+	 * @param delId
+	 * @return
+	 * @since 2015年12月15日 下午12:36:37
+	 */
+	@At("/deletePicture")
+	@Ok("raw:html")
+	public int deletePicture(@Param("delId") int delId) {
+		int status = pictureService.delPictureById(delId);
+		return status;
+	}
+
+	/**
+	 * 删除多个图片
+	 * 
+	 * @param pIds
+	 * @return
+	 */
+	@At("/deleteMorePicture")
+	@Ok("raw:html")
+	public int deleteMorePicture(@Param("pIds") String pIds) {
+		int status = pictureService.delMorePicture(pIds);
+		return status;
+	}
 }

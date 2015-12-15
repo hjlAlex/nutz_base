@@ -91,6 +91,9 @@ public class PictureService {
 			return "not_select_img";
 		}
 		File f = tf.getFile();
+		if (null == getImagSuffex(f.getName())) {
+			return "add_error";
+		}
 		String parent = req.getSession().getServletContext()
 				.getRealPath("/upload/image");
 		File imgDir = new File(parent);
@@ -98,7 +101,7 @@ public class PictureService {
 			imgDir.mkdir();
 		}
 		File imgFile = new File(imgDir, System.currentTimeMillis()
-				+ f.getName());
+				+ getImagSuffex(f.getName()));
 		try {
 			FileUtils.copyFile(f, imgFile);
 			picture.setPath("/upload/image/" + imgFile.getName());
@@ -114,4 +117,79 @@ public class PictureService {
 		return "add_success";
 	}
 
+	/**
+	 * 根据id获取图片
+	 * 
+	 * @param pid
+	 * @return
+	 */
+	public Picture getPictureById(int pid) {
+		try {
+			return pictureDao.getById(Picture.class, pid);
+		} catch (Exception e) {
+			log.error("获取图片失败!id=" + pid, e);
+		}
+		return null;
+	}
+
+	/**
+	 * 根据id删除图片
+	 * 
+	 * @param delId
+	 * @return
+	 * @since 2015年12月15日 下午12:36:13
+	 */
+	public int delPictureById(int delId) {
+		int result = 400;
+		try {
+			Picture oldPicture = getPictureById(delId);
+			if (null == oldPicture) {
+				log.error("图片不存在!");
+				return result;
+			}
+			return pictureDao.deleteById(Picture.class, delId) > 0 ? 200 : 400;
+		} catch (Exception e) {
+			log.error("删除图片失败!id=" + delId, e);
+		}
+		return result;
+	}
+
+	/**
+	 * 根据图片名称获取后缀
+	 * 
+	 * @param imageName
+	 * @return
+	 * @since 2015年12月15日 下午1:01:00
+	 */
+	private String getImagSuffex(String imageName) {
+		int index = imageName.lastIndexOf(".");
+		if (-1 != index) {
+			return imageName.substring(index);
+		}
+		return null;
+	}
+
+	/**
+	 * 删除多个图片
+	 * 
+	 * @param pIds
+	 * @return
+	 * @since 2015年12月15日 下午1:22:25
+	 */
+	public int delMorePicture(String pIds) {
+		int result = 400;
+		try {
+			if (StringUtils.isBlank(pIds)) {
+				return result;
+			}
+			String[] delIds = pIds.split(",");
+			for (String delId : delIds) {
+				pictureDao.deleteById(Picture.class, Integer.parseInt(delId));
+			}
+			return 200;
+		} catch (Exception e) {
+			log.error("删除图片失败!pIds=" + pIds, e);
+		}
+		return result;
+	}
 }
