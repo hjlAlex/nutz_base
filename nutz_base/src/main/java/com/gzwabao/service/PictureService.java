@@ -118,6 +118,53 @@ public class PictureService {
 	}
 
 	/**
+	 * 更新图片
+	 * 
+	 * @param tf
+	 * @param picture
+	 * @param req
+	 * @return
+	 */
+	public String updatePicture(TempFile tf, Picture picture,
+			HttpServletRequest req) {
+		if (null != tf) {
+			File f = tf.getFile();
+			if (null == getImagSuffex(f.getName())) {
+				return "update_error";
+			}
+			String oldImagePath = req.getSession().getServletContext()
+					.getRealPath(picture.getPath());
+			File oldImage = new File(oldImagePath);
+			if (oldImage.exists()) {
+				oldImage.delete();
+			}
+			String parent = req.getSession().getServletContext()
+					.getRealPath("/upload/image");
+			File imgDir = new File(parent);
+			if (!imgDir.exists()) {
+				imgDir.mkdir();
+			}
+			File imgFile = new File(imgDir, System.currentTimeMillis()
+					+ getImagSuffex(f.getName()));
+			try {
+				FileUtils.copyFile(f, imgFile);
+				picture.setPath("/upload/image/" + imgFile.getName());
+				pictureDao.updateAll(picture);
+				if (f != null) {
+					f.delete();
+				}
+				return "update_success";
+			} catch (Exception e) {
+				log.error("更新失败!", e);
+				// 添加失败
+				return "update_error";
+			}
+		}
+		pictureDao.updateAll(picture);
+		return "update_success";
+	}
+
+	/**
 	 * 根据id获取图片
 	 * 
 	 * @param pid

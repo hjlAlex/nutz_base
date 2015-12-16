@@ -17,10 +17,12 @@ import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.TempFile;
 import org.nutz.mvc.upload.UploadAdaptor;
 
+import com.gzwabao.entity.News;
 import com.gzwabao.entity.Page;
 import com.gzwabao.entity.Picture;
 import com.gzwabao.entity.User;
 import com.gzwabao.filter.LoginFilter;
+import com.gzwabao.service.NewsService;
 import com.gzwabao.service.PageService;
 import com.gzwabao.service.PictureService;
 import com.gzwabao.service.UserService;
@@ -44,6 +46,9 @@ public class AdminAction {
 
 	@Inject(value = "pictureService")
 	private PictureService pictureService;
+
+	@Inject(value = "newsService")
+	private NewsService newsService;
 
 	/**
 	 * 管理首页
@@ -348,5 +353,54 @@ public class AdminAction {
 	public int deleteMorePicture(@Param("pIds") String pIds) {
 		int status = pictureService.delMorePicture(pIds);
 		return status;
+	}
+
+	/**
+	 * 跳往图片编辑页面
+	 * 
+	 * @param oldId
+	 * @return
+	 */
+	@At("/update_picture")
+	@Ok("vm:template.admin.update_picture")
+	public Picture toUpdatePicture(@Param("oldId") int oldId) {
+		return pictureService.getPictureById(oldId);
+	}
+
+	/**
+	 * 更新图片
+	 * 
+	 * @param tf
+	 * @param picture
+	 * @param req
+	 * @return
+	 */
+	@At("/updatePicture")
+	@Ok("vm:template.admin.update_picture")
+	@AdaptBy(type = UploadAdaptor.class, args = { "${app.root}/WEB-INF/tmp" })
+	public String updatePicture(@Param("image") TempFile tf,
+			@Param("..") Picture picture, HttpServletRequest req) {
+		return pictureService.updatePicture(tf, picture, req);
+	}
+
+	// ===============图片业务结束
+	// ===============资讯业务开始
+	@At("/add_news")
+	@Ok("vm:template.admin.add_news")
+	public void toAddNews() {
+	}
+
+	@At("/addNews")
+	@Ok("vm:template.admin.add_news")
+	public String addNews(@Param("..") News news) {
+		return newsService.addNews(news) + "";
+	}
+
+	@At("/upLoadNewsImgJson")
+	@Ok("raw:html")
+	@AdaptBy(type = UploadAdaptor.class, args = { "${app.root}/WEB-INF/tmp" })
+	public String upLoadNewsImgJson(@Param("imgFile") TempFile tf,
+			HttpServletRequest req) {
+		return newsService.uploadNewsImg(tf, req);
 	}
 }
