@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.nutz.dao.Cnd;
-import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -25,6 +24,7 @@ import org.nutz.mvc.upload.TempFile;
 import com.gzwabao.dao.NewsDao;
 import com.gzwabao.entity.News;
 import com.gzwabao.json.ImageJson;
+import com.gzwabao.util.DateUtil;
 
 /**
  * @author Alex
@@ -68,23 +68,31 @@ public class NewsService {
 	 * 
 	 * @param curPage
 	 * @param pageSize
+	 * @param datemin
+	 * @param datemax
 	 * @param keyword
 	 * @return
+	 * @since 2015年12月17日 下午1:32:53
 	 */
 	public Map<String, Object> getNewsList(int curPage, int pageSize,
-			String keyword) {
+			String datemin, String datemax, String keyword) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			Pager pager = new Pager();
 			int totalRecord = 0;
-			Condition cnd = null;
-			if (StringUtils.isBlank(keyword)) {
-				totalRecord = newsDao.getCount(News.class, null);
-
-			} else {
-				cnd = Cnd.where("title", "like", "%" + keyword + "%");
-				totalRecord = newsDao.getCount(News.class, cnd);
+			Cnd cnd = Cnd.where("1", "=", 1);
+			if (StringUtils.isNotBlank(datemin)
+					&& StringUtils.isNotBlank(datemax)) {
+				cnd = cnd.and("updateTime", ">=", DateUtil.parse(datemin
+						+ " 00:00:00", "yyyy-MM-dd HH:mm:ss"));
+				cnd = cnd.and("updateTime", "<=", DateUtil.parse(datemax
+						+ " 23:59:59", "yyyy-MM-dd HH:mm:ss"));
 			}
+			if (StringUtils.isNotBlank(keyword)) {
+				cnd = cnd.and("title", "like", "%" + keyword + "%");
+
+			}
+			totalRecord = newsDao.getCount(News.class, cnd);
 			pager.setRecordCount(totalRecord);
 			if (curPage <= 0 || pageSize <= 0) {
 				pager.setPageNumber(1);

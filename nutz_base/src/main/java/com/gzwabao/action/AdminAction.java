@@ -403,4 +403,13 @@ public class AdminAction {
 			HttpServletRequest req) {
 		return newsService.uploadNewsImg(tf, req);
 	}
+
+	@At("/news_list")
+	@Ok("vm:template.admin.news_list")
+	public Map<String, Object> getNewsList(@Param("curPage") int curPage,
+			@Param("pageSize") int pageSize, @Param("datemin") String datemin,
+			@Param("datemax") String datemax, @Param("keyword") String keyword) {
+		return newsService.getNewsList(curPage, pageSize, datemin, datemax,
+				keyword);
+	}
 }
