@@ -20,64 +20,65 @@
 <script type="text/javascript" src="${base}/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<title>添加资讯</title>
+<title>更新资讯</title>
 </head>
 <body>
 <div class="pd-20">
-	<form action="addNews" method="post" class="form form-horizontal" id="form-news-add">
+	<form action="updateNews" method="post" class="form form-horizontal" id="form-news-update">
+		<input type="hidden" name="oldId" value="${obj.id}">
 		<div class="row cl">
 			<label class="form-label col-3"><span class="c-red">*</span>标题：</label>
 			<div class="formControls col-5"  style="width:658px;">
-				<input type="text" class="input-text" value="" placeholder="" id="strId" name="title">
+				<input type="text" class="input-text" value="${obj.title}" placeholder="" name="title">
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-3"><span class="c-red">*</span>内容：</label>
 			<div class="formControls col-5" style="width:658px;">
-				<textarea id="news_content" name="content"></textarea>
+				<textarea id="news_content" name="content">${obj.content}</textarea>
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-3"><span class="c-grey">*</span>备注：</label>
 			<div class="formControls col-5" style="width:658px;">
-				<input type="text" class="input-text" value="" placeholder="" id="remark" name="remark">
+				<input type="text" class="input-text" value="${obj.remark}" placeholder="" id="remark" name="remark">
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-3"><span class="c-grey">*</span>ext1：</label>
 			<div class="formControls col-5" style="width:658px;">
-				<input type="text" id="ext1" name="ext1" autocomplete="off" value="" class="input-text" datatype="*0-16">
+				<input type="text" id="ext1" name="ext1" autocomplete="off" value="${obj.ext1}" class="input-text" datatype="*0-16">
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-3"><span class="c-grey">*</span>ext2：</label>
 			<div class="formControls col-5" style="width:658px;"> 
-				<input type="text" id="ext2" name="ext2" autocomplete="off" value="" class="input-text" datatype="*0-16">
+				<input type="text" id="ext2" name="ext2" autocomplete="off" value="${obj.ext2}" class="input-text" datatype="*0-16">
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-3"><span class="c-grey">*</span>ext3：</label>
 			<div class="formControls col-5" style="width:658px;">
-				<input type="text" id="ext3" name="ext3" autocomplete="off" value="" class="input-text" datatype="*0-16">
+				<input type="text" id="ext3" name="ext3" autocomplete="off" value="${obj.ext3}" class="input-text" datatype="*0-16">
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-3"><span class="c-grey">*</span>ext4：</label>
 			<div class="formControls col-5" style="width:658px;">
-				<input type="text" id="ext4" name="ext4" autocomplete="off" value="" class="input-text" datatype="*0-16">
+				<input type="text" id="ext4" name="ext4" autocomplete="off" value="${obj.ext4}" class="input-text" datatype="*0-16">
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-3"><span class="c-grey">*</span>ext5：</label>
 			<div class="formControls col-5" style="width:658px;">
-				<input type="text" id="ext5" name="ext5" autocomplete="off" value="" class="input-text" datatype="*0-16">
+				<input type="text" id="ext5" name="ext5" autocomplete="off" value="${obj.ext5}" class="input-text" datatype="*0-16">
 			</div>
 			<div class="col-4"> </div>
 		</div>
@@ -104,7 +105,7 @@ KindEditor.ready(function(K) {
 });
 $(function(){
 	#if($obj && $obj == 200)
-		alert("添加成功!");
+		alert("修改成功!");
 		parent.refresh();
 	#end
 });

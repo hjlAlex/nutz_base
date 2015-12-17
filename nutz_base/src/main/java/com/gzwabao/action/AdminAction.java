@@ -17,11 +17,13 @@ import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.TempFile;
 import org.nutz.mvc.upload.UploadAdaptor;
 
+import com.gzwabao.entity.Navigation;
 import com.gzwabao.entity.News;
 import com.gzwabao.entity.Page;
 import com.gzwabao.entity.Picture;
 import com.gzwabao.entity.User;
 import com.gzwabao.filter.LoginFilter;
+import com.gzwabao.service.NavService;
 import com.gzwabao.service.NewsService;
 import com.gzwabao.service.PageService;
 import com.gzwabao.service.PictureService;
@@ -49,6 +51,9 @@ public class AdminAction {
 
 	@Inject(value = "newsService")
 	private NewsService newsService;
+
+	@Inject(value = "navService")
+	private NavService navService;
 
 	/**
 	 * 管理首页
@@ -411,5 +416,113 @@ public class AdminAction {
 			@Param("datemax") String datemax, @Param("keyword") String keyword) {
 		return newsService.getNewsList(curPage, pageSize, datemin, datemax,
 				keyword);
+	}
+
+	@At("/update_news")
+	@Ok("vm:template.admin.update_news")
+	public News toUpdateNews(@Param("newsId") int newsId) {
+		return newsService.getNewsById(newsId);
+	}
+
+	@At("/updateNews")
+	@Ok("vm:template.admin.update_news")
+	public int updateNews(@Param("..") News news, @Param("oldId") int oldId) {
+		return newsService.updateNewsByOid(oldId, news);
+	}
+
+	@At("/deleteNews")
+	@Ok("raw:html")
+	public int deleteNews(@Param("delId") int delId) {
+		return newsService.delNewsById(delId);
+	}
+
+	@At("/deleteMoreNews")
+	@Ok("raw:html")
+	public int deleteMoreNews(@Param("newsIds") String newsIds) {
+		return newsService.delMoreNews(newsIds);
+	}
+
+	// ===============资讯业务结束
+	// ===============导航业务开始
+	/**
+	 * 获取导航列表
+	 * 
+	 * @param curPage
+	 * @param pageSize
+	 * @param keyword
+	 * @return
+	 */
+	@At("/nav_list")
+	@Ok("vm:template.admin.nav_list")
+	public Map<String, Object> getNavList(@Param("curPage") int curPage,
+			@Param("pageSize") int pageSize, @Param("keyword") String keyword) {
+		return navService.getNavList(curPage, pageSize, keyword);
+	}
+
+	/**
+	 * 跳往添加导航页面
+	 */
+	@At("/add_nav")
+	@Ok("vm:template.admin.add_nav")
+	public void toAddNav() {
+
+	}
+
+	/**
+	 * 添加导航
+	 * 
+	 * @param nav
+	 * @return
+	 */
+	@At("/addNav")
+	@Ok("vm:template.admin.add_nav")
+	public int addNav(@Param("..") Navigation nav) {
+		return navService.addNav(nav);
+	}
+
+	/**
+	 * 跳往更新导航页面
+	 */
+	@At("/update_nav")
+	@Ok("vm:template.admin.update_nav")
+	public Navigation toUpdateNav(int nid) {
+		return navService.getNavById(nid);
+	}
+
+	/**
+	 * 更新导航
+	 * 
+	 * @param nav
+	 * @param oldId
+	 * @return
+	 */
+	@At("/updateNav")
+	@Ok("vm:template.admin.update_nav")
+	public int updateNav(@Param("..") Navigation nav, @Param("oldId") int oldId) {
+		return navService.updateNavByOid(oldId, nav);
+	}
+
+	/**
+	 * 删除导航
+	 * 
+	 * @param delId
+	 * @return
+	 */
+	@At("/deleteNav")
+	@Ok("raw:html")
+	public int deleteNav(@Param("delId") int delId) {
+		return navService.delNavById(delId);
+	}
+
+	/**
+	 * 删除导航
+	 * 
+	 * @param navIds
+	 * @return
+	 */
+	@At("/deleteMoreNav")
+	@Ok("raw:html")
+	public int deleteMoreNav(@Param("navIds") String navIds) {
+		return navService.delMoreNav(navIds);
 	}
 }

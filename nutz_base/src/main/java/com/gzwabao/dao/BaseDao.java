@@ -83,7 +83,7 @@ public abstract class BaseDao<T extends Serializable> {
 	}
 
 	/**
-	 * 更新单个字段(子类实现)
+	 * 更新单个字段
 	 * 
 	 * @param id
 	 * @param colName

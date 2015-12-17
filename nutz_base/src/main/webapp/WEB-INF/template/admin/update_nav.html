@@ -20,64 +20,65 @@
 <script type="text/javascript" src="${base}/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<title>添加资讯</title>
+<title>更新导航</title>
 </head>
 <body>
 <div class="pd-20">
-	<form action="addNews" method="post" class="form form-horizontal" id="form-news-add">
+	<form action="updateNav" method="post" class="form form-horizontal" id="form-nav-update">
+		<input type="hidden" name="oldId" value="${obj.id}">
 		<div class="row cl">
-			<label class="form-label col-3"><span class="c-red">*</span>标题：</label>
-			<div class="formControls col-5"  style="width:658px;">
-				<input type="text" class="input-text" value="" placeholder="" id="strId" name="title">
+			<label class="form-label col-3"><span class="c-red">*</span>导航名称：</label>
+			<div class="formControls col-5">
+				<input type="text" class="input-text" value="${obj.name}" placeholder="" id="name" name="name" datatype="*2-16" nullmsg="导航名称不能为空">
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-3"><span class="c-red">*</span>内容：</label>
-			<div class="formControls col-5" style="width:658px;">
-				<textarea id="news_content" name="content"></textarea>
+			<label class="form-label col-3"><span class="c-red">*</span>导航Url：</label>
+			<div class="formControls col-5">
+				<input type="text" class="input-text" value="${obj.linkUrl}" placeholder="" id="linkUrl" name="linkUrl" datatype="*2-50" nullmsg="导航Url不能为空">
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-3"><span class="c-grey">*</span>备注：</label>
-			<div class="formControls col-5" style="width:658px;">
-				<input type="text" class="input-text" value="" placeholder="" id="remark" name="remark">
+			<div class="formControls col-5">
+				<input type="text" class="input-text" value="${obj.remark}" placeholder="" id="remark" name="remark" datatype="*0-250">
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-3"><span class="c-grey">*</span>ext1：</label>
-			<div class="formControls col-5" style="width:658px;">
-				<input type="text" id="ext1" name="ext1" autocomplete="off" value="" class="input-text" datatype="*0-16">
+			<div class="formControls col-5">
+				<input type="text" class="input-text" value="${obj.ext1}" placeholder="" id="ext1" name="ext1" datatype="*0-250">
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-3"><span class="c-grey">*</span>ext2：</label>
-			<div class="formControls col-5" style="width:658px;"> 
-				<input type="text" id="ext2" name="ext2" autocomplete="off" value="" class="input-text" datatype="*0-16">
+			<div class="formControls col-5">
+				<input type="text" class="input-text" value="${obj.ext2}" placeholder="" id="ext2" name="ext2" datatype="*0-250">
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-3"><span class="c-grey">*</span>ext3：</label>
-			<div class="formControls col-5" style="width:658px;">
-				<input type="text" id="ext3" name="ext3" autocomplete="off" value="" class="input-text" datatype="*0-16">
+			<div class="formControls col-5">
+				<input type="text" class="input-text" value="${obj.ext3}" placeholder="" id="ext3" name="ext3" datatype="*0-250">
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-3"><span class="c-grey">*</span>ext4：</label>
-			<div class="formControls col-5" style="width:658px;">
-				<input type="text" id="ext4" name="ext4" autocomplete="off" value="" class="input-text" datatype="*0-16">
+			<div class="formControls col-5">
+				<input type="text" class="input-text" value="${obj.ext4}" placeholder="" id="ext4" name="ext4" datatype="*0-250">
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-3"><span class="c-grey">*</span>ext5：</label>
-			<div class="formControls col-5" style="width:658px;">
-				<input type="text" id="ext5" name="ext5" autocomplete="off" value="" class="input-text" datatype="*0-16">
+			<div class="formControls col-5">
+				<input type="text" class="input-text" value="${obj.ext5}" placeholder="" id="ext5" name="ext5" datatype="*0-250">
 			</div>
 			<div class="col-4"> </div>
 		</div>
@@ -93,18 +94,21 @@
 <script type="text/javascript" src="${base}/lib/Validform/5.3.2/Validform.min.js?now=$dateUtils.getNow()"></script> 
 <script type="text/javascript" src="${base}/lib/layer/1.9.3/layer.js?now=$dateUtils.getNow()"></script> 
 <script type="text/javascript" src="${base}/js/H-ui.js?now=$dateUtils.getNow()"></script> 
-<script type="text/javascript" src="${base}/js/H-ui.admin.js?now=$dateUtils.getNow()"></script>
-<script type="text/javascript" src="${base}/lib/kindeditor4/kindeditor.js?now=$dateUtils.getNow()"></script>  
+<script type="text/javascript" src="${base}/js/H-ui.admin.js?now=$dateUtils.getNow()"></script> 
 <script type="text/javascript">
-var editor;
-KindEditor.ready(function(K) {
-    editor = K.create('#news_content', {
-        uploadJson : 'upLoadNewsImgJson")',
-    });
-});
 $(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-nav-add").Validform({
+		tiptype:2
+	});
+	
 	#if($obj && $obj == 200)
-		alert("添加成功!");
+		alert("更新成功!");
 		parent.refresh();
 	#end
 });

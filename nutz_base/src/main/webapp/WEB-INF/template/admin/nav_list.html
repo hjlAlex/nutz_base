@@ -1,0 +1,229 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="${base}/lib/html5.js?now=$dateUtils.getNow()"></script>
+<script type="text/javascript" src="${base}/lib/respond.min.js?now=$dateUtils.getNow()"></script>
+<script type="text/javascript" src="${base}/lib/PIE_IE678.js?now=$dateUtils.getNow()"></script>
+<![endif]-->
+<link href="${base}/css/H-ui.min.css?now=$dateUtils.getNow()" rel="stylesheet" type="text/css" />
+<link href="${base}/css/H-ui.admin.css?now=$dateUtils.getNow()" rel="stylesheet" type="text/css" />
+
+<link href="${base}/lib/Hui-iconfont/1.0.1/iconfont.css?now=$dateUtils.getNow()" rel="stylesheet" type="text/css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="${base}/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>导航列表</title>
+</head>
+#set($msg = $request.getAttribute("msg"))
+#set($recordList = $obj.recordList)
+#set($pager = $obj.pager)
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>资讯管理 <span class="c-gray en">&gt;</span> 资讯列表 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="pd-20">
+	<div class="text-r">
+		<form action="nav_list" method="post">
+			<input type="text" class="input-text" style="width:250px" placeholder="输入名字或Url" id="" name="keyword">
+			<button type="submit" class="btn btn-success" id=""><i class="Hui-iconfont">&#xe665;</i> 搜导航</button>
+		</form>
+	</div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="javascript:delNavMany();" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="nav_add('添加导航','add_nav.html')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加资讯</a></span> <span class="r">共有数据：<strong>$pager.recordCount</strong> 条</span> </div>
+	<table class="table table-border table-bordered table-bg table-hover">
+		<thead>
+			<tr>
+				<th scope="col" colspan="6">导航列表</th>
+			</tr>
+			<tr class="text-c">
+				<th width="25"><input id="chkAll" type="checkbox" value=""></th>
+				<th width="40">ID</th>
+				<th width="100">名字</th>
+				<th width="100">链接URL</th>
+				<th width="150">备注</th>
+				<th width="100">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($nav_obj in $recordList)
+			<tr class="text-c">
+				<td><input type="checkbox" name="navId" value="${nav_obj.id}" ></td>
+				<td>$!{nav_obj.id}</td>
+				<td>$!{nav_obj.name}</td>
+				<td>$!{nav_obj.linkUrl}</td>
+				<td>$!{nav_obj.remark}</td>
+				<td class="td-manage">
+					<a title="编辑" href="javascript:;" onclick="nav_edit('导航编辑','update_nav.html','$!{nav_obj.id}')" class="ml-6" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<a title="删除" href="javascript:;" onclick="nav_del(this,'${nav_obj.id}')" class="ml-6" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+				</td>
+			</tr>
+			#end
+		</tbody>
+		<thead>
+			<tr>
+				<td scope="col" colspan="6" style="text-align: center;">
+					#set($curPage = ${pager.pageNumber})
+					#if($pager.pageCount <= 1 && $pager.pageNumber == 1)
+						<a class="btn btn-primary radius">首页</a>
+					#else
+						<a href="javascript:;" onclick="javascript:goPage(1,${pager.pageSize});" class="btn btn-primary radius">首页</a>
+					#end
+					
+					#if($pager.pageCount > 1 && $pager.pageNumber > 1)
+						&nbsp;&nbsp;
+						#set($curPage = ${pager.pageNumber} - 1)
+						<a href="javascript:;" onclick="javascript:goPage($curPage,${pager.pageSize});" class="btn btn-primary radius">上一页</a>
+					#end
+					
+					#if($pager.pageCount >1 && $pager.pageNumber != $pager.pageCount)
+						&nbsp;&nbsp;
+						#set($curPage = ${pager.pageNumber} + 1)
+						<a href="javascript:;" onclick="javascript:goPage($curPage,${pager.pageSize});" class="btn btn-primary radius">下一页</a>
+					#end
+					&nbsp;&nbsp;
+					#if($pager.pageNumber == $pager.pageCount)
+						<a class="btn btn-primary radius">尾页</a>
+					#elseif($pager.pageCount > 1)
+						<a href="javascript:;" onclick="javascript:goPage($pager.pageCount,$pager.pageSize);" class="btn btn-primary radius">尾页</a>
+					#end
+					&nbsp;&nbsp;
+					<a class="btn btn-primary radius" style="text-decoration: none;">当前第&nbsp;$pager.pageNumber&nbsp;页&nbsp;&nbsp;共&nbsp;$pager.pageCount&nbsp;页<a>
+				</td>
+			</tr>
+		</thead>
+	</table>
+</div>
+<script type="text/javascript" src="${base}/lib/jquery/1.9.1/jquery.min.js?now=$dateUtils.getNow()"></script>  
+<script type="text/javascript" src="${base}/lib/layer/1.9.3/layer.js?now=$dateUtils.getNow()"></script> 
+<script type="text/javascript" src="${base}/lib/laypage/1.2/laypage.js?now=$dateUtils.getNow()"></script> 
+<script type="text/javascript" src="${base}/lib/My97DatePicker/WdatePicker.js?now=$dateUtils.getNow()"></script> 
+<script type="text/javascript" src="${base}/js/H-ui.js?now=$dateUtils.getNow()"></script> 
+<script type="text/javascript" src="${base}/js/H-ui.admin.js?now=$dateUtils.getNow()"></script> 
+<script type="text/javascript">
+$(function(){
+	$("#chkAll").click(function(e) {
+    	$("input[name='navId']").prop("checked", $(this).prop("checked"));
+    });
+    $("input[name='navId']").click(function() {
+    	var state = true;
+    	$("input[name='navId']").each(function(index, element) {
+    		if (!($(this).prop("checked"))) {
+    			state = false;
+    		}
+    	});
+    	$("#chkAll").prop("checked", state);
+    });  
+});
+/*资讯-添加*/
+function nav_add(title,url){
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
+}
+function nav_edit(title,url,id){
+	url = url + "?nid=" + id;
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
+}
+/*管理员-删除*/
+function nav_del(obj,delId){
+	if(confirm('确认要删除吗？')){
+		$.ajax({
+			type: 'POST',
+			data: {
+				"delId":delId,
+			},
+			url: 'deleteNav',
+            success: function (status) { 
+            	if(200 == status){
+            		alert("删除成功!");
+            		refresh();
+            	}else{
+            		alert("删除失败!");
+            	}
+            	
+            }
+        });
+	}
+}
+
+function delNavMany(){
+	var navIds = "";
+	$("input[name='navId']").each(function(index, element) {
+		if ($(this).prop("checked")) {
+			navIds = navIds+$(this).val()+","; 
+		}
+	});
+	if("" != navIds){
+		navIds = navIds.substring(0,navIds.length-1);
+		if(confirm('确认要删除吗？')){
+			$.ajax({
+				type: 'POST',
+				data: {
+					"navIds":navIds,
+				},
+				url: 'deleteMoreNav',
+	            success: function (status) { 
+	            	if(200 == status){
+	            		alert("删除成功!");
+	            		refresh();
+	            	}else{
+	            		alert("删除失败!");
+	            	}
+	            	
+	            }
+	        });
+		}
+	}else{
+		alert("未选择任何id!");
+	}
+	
+}
+
+
+function refresh(){
+	var temp = document.createElement("form");        
+    temp.action = "nav_list";        
+    temp.method = "post";        
+    temp.style.display = "none";
+    var params = {"curPage":'$!pager.pageNumber',"pageSize":'$!pager.pageSize',"keyword":'$!{p.keyword}'};
+    for (var x in params) {
+        var opt = document.createElement("textarea");        
+        opt.name = x;        
+        opt.value = params[x];
+        temp.appendChild(opt);        
+    }
+    document.body.appendChild(temp);        
+    temp.submit();  
+}
+
+function goPage(curPage,pageSize) {
+    var temp = document.createElement("form");        
+    temp.action = "nav_list";        
+    temp.method = "post";        
+    temp.style.display = "none";
+    var params = {"curPage":'$!pager.pageNumber',"pageSize":'$!pager.pageSize',"keyword":'$!{p.keyword}'};
+    for (var x in params) {
+        var opt = document.createElement("textarea");        
+        opt.name = x;        
+        opt.value = params[x];
+        temp.appendChild(opt);        
+    }
+    document.body.appendChild(temp);        
+    temp.submit();        
+}
+</script>
+</body>
+</html>
