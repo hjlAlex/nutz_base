@@ -20,6 +20,9 @@ public class Module implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public static final int TYPE_PICTURE = 1;// 图片类型
+	public static final int TYPE_NEWS = 2;// 资讯类型
+	public static final int TYPE_NAV = 3;// 导航类型
 	@Id(auto = true)
 	// id主键,自增
 	private int id;
