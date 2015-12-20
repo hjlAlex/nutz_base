@@ -10,15 +10,18 @@ package com.gzwabao.util;
 import java.security.MessageDigest;
 
 /**
- * @author huyuanzhi
+ * @author Alex
  *
  */
 public class MD5Utils {
 	private final static String[] hexDigits = { "0", "1", "2", "3", "4", "5",
 			"6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
+
 	/**
 	 * 转换字节数组为16进制字串
-	 * @param b 字节数组
+	 * 
+	 * @param b
+	 *            字节数组
 	 * @return 16进制字串
 	 */
 	public static String byteArrayToHexString(byte[] b) {
@@ -28,8 +31,10 @@ public class MD5Utils {
 		}
 		return resultSb.toString();
 	}
+
 	/**
 	 * 转换byte到16进制
+	 * 
 	 * @param b
 	 * @return
 	 */
@@ -42,12 +47,14 @@ public class MD5Utils {
 		int d2 = n % 16;
 		return hexDigits[d1] + hexDigits[d2];
 	}
-	/** 
+
+	/**
 	 * 编码
+	 * 
 	 * @param origin
 	 * @return
 	 */
-	//MessageDigest 为 JDK 提供的加密类
+	// MessageDigest 为 JDK 提供的加密类
 	public static String MD5Encode(String origin) {
 		String resultString = null;
 		try {
@@ -62,5 +69,5 @@ public class MD5Utils {
 
 	public static void main(String[] args) {
 		System.err.println(MD5Encode("admin"));
-	} 
+	}
 }

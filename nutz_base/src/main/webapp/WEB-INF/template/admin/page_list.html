@@ -57,7 +57,7 @@
 				<td>$!{page_obj.strId}</td>
 				<td>$!{page_obj.locaUrl}</td>
 				<td>$!{page_obj.remark}</td>
-				<td><a href="javascript:;" onclick="javascript:;" class="btn btn-primary radius">模块管理</a></td>
+				<td><a href="javascript:;" onclick="javascript:moduleManage('模块管理','module_manage.html',${page_obj.id});" class="btn btn-primary radius">模块管理</a></td>
 				<td class="td-manage">
 					<a title="编辑" href="javascript:;" onclick="page_edit('页面编辑','update_page.html','$!{page_obj.id}','800','500')" class="ml-6" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
 					&nbsp;&nbsp;&nbsp;&nbsp;
@@ -223,6 +223,16 @@ function goPage(curPage,pageSize) {
     }
     document.body.appendChild(temp);        
     temp.submit();        
+}
+
+function moduleManage(title,url,id){
+	url = url + "?pid=" + id;
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
 }
 </script>
 </body>

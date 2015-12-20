@@ -27,7 +27,7 @@ public class News implements Serializable {
 	private String title;
 
 	@Column(value = "content")
-	@ColDefine(type = ColType.VARCHAR, width = 1024, notNull = true)
+	@ColDefine(type = ColType.VARCHAR, width = 5000, notNull = true)
 	private String content;
 
 	@Column(value = "create_time")

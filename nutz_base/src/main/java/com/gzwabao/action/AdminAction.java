@@ -1,6 +1,7 @@
 package com.gzwabao.action;
 
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,12 +18,14 @@ import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.TempFile;
 import org.nutz.mvc.upload.UploadAdaptor;
 
+import com.gzwabao.entity.Module;
 import com.gzwabao.entity.Navigation;
 import com.gzwabao.entity.News;
 import com.gzwabao.entity.Page;
 import com.gzwabao.entity.Picture;
 import com.gzwabao.entity.User;
 import com.gzwabao.filter.LoginFilter;
+import com.gzwabao.service.ModuleService;
 import com.gzwabao.service.NavService;
 import com.gzwabao.service.NewsService;
 import com.gzwabao.service.PageService;
@@ -54,6 +57,9 @@ public class AdminAction {
 
 	@Inject(value = "navService")
 	private NavService navService;
+
+	@Inject(value = "moduleService")
+	private ModuleService moduleService;
 
 	/**
 	 * 管理首页
@@ -524,5 +530,106 @@ public class AdminAction {
 	@Ok("raw:html")
 	public int deleteMoreNav(@Param("navIds") String navIds) {
 		return navService.delMoreNav(navIds);
+	}
+
+	// ===============导航业务结束
+	// ===============模块业务开始
+	/**
+	 * 页面模块管理
+	 * 
+	 * @param pid
+	 * @return
+	 */
+	@At("/module_manage")
+	@Ok("vm:template.admin.module_manage")
+	public Map<String, Object> moduleManage(@Param("pid") int pid) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("moduleList", moduleService.getModuleList(pid));
+		map.put("page", pageService.getPageById(pid));
+		return map;
+	}
+
+	/**
+	 * 添加模块页面
+	 * 
+	 * @param pid
+	 * @return
+	 */
+	@At("/add_module")
+	@Ok("vm:template.admin.add_module")
+	public Map<String, Object> toAddModule(@Param("pid") int pid) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("pictureList", pictureService.getAllPicture());
+		map.put("newsList", newsService.getAllNews());
+		map.put("navList", navService.getAllNav());
+		return map;
+	}
+
+	/**
+	 * 添加模块
+	 * 
+	 * @param module
+	 * @param req
+	 * @return
+	 */
+	@At("/addModule")
+	@Ok("vm:template.admin.add_module")
+	public int addModule(@Param("..") Module module, HttpServletRequest req) {
+		return moduleService.addModule(module, req);
+	}
+
+	/**
+	 * 更新模块页面
+	 * 
+	 * @param mid
+	 * @return
+	 */
+	@At("/update_module")
+	@Ok("vm:template.admin.update_module")
+	public Map<String, Object> toUpdateModule(@Param("mid") int mid) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("module", moduleService.getModuleById(mid));
+		map.put("pictureList", pictureService.getAllPicture());
+		map.put("newsList", newsService.getAllNews());
+		map.put("navList", navService.getAllNav());
+		return map;
+	}
+
+	/**
+	 * 更新模块
+	 * 
+	 * @param module
+	 * @param req
+	 * @return
+	 */
+	@At("/updateModule")
+	@Ok("vm:template.admin.update_module")
+	public int updateModule(@Param("oldId") int oldId,
+			@Param("..") Module module, HttpServletRequest req) {
+		return moduleService.updateModuleByOid(oldId, module, req);
+	}
+
+	/**
+	 * 删除模块
+	 * 
+	 * @param delId
+	 * @return
+	 */
+	@At("/deleteModule")
+	@Ok("raw:html")
+	public int deleteModule(@Param("delId") int delId) {
+		return moduleService.delModuleById(delId);
+	}
+
+	/**
+	 * 删除模块
+	 * 
+	 * @param mIds
+	 * @return
+	 */
+	@At("/deleteMoreModule")
+	@Ok("raw:html")
+	public int deleteMoreModule(@Param("mIds") String mIds) {
+		return moduleService.delMoreModule(mIds);
 	}
 }

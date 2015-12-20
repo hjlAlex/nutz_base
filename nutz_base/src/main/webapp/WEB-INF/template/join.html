@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>加盟介绍</title>
+  <link type="text/css" rel="stylesheet" href="${base}/css/screen.css"/>
+  <link type="text/css" rel="stylesheet" href="${base}/css/common.css"/>
+  <link type="text/css" rel="stylesheet" href="${base}/css/fe-news.css"/>
+  <script type="text/javascript" src="${base}/js/jquery.min.js"></script>
+  <script type="text/javascript" src="${base}/js/jquery.slide.js"></script>
+  <script type="text/javascript" src="${base}/js/index.js"></script>
+</head>
+#set($all_module = $obj)
+<body>
+<div class="doc">
+  <div class="wrapper">
+	<div class="header">
+        <div class="inner">
+        	#set($logo = $adminUtils.getCommonLogo())
+            <a class="lay-a" href="#" title="${logo.ext1}" target="_blank">
+                <img src="${base}${logo.path}" width="120" height="90">
+            </a>
+            
+            <div class="lay-b">
+				#set($navs = $adminUtils.getCommonNav())
+                #foreach($nav in $navs)
+					<a class="item" href="${base}${nav.linkUrl}" title="${nav.name}" target="_blank">
+                        <label class="tit">${nav.name}</label>
+                        <label class="desc">${nav.ext1}</label>
+                    </a>
+				#end
+            </div>
+        </div>
+    </div>
+
+    <div class="banner">
+        <div id="JSlide1" class="slide1">
+			#set($shuffs = $adminUtils.getCommonPicture())
+            <ul class="pics">
+	 		#foreach($shuff in $shuffs)
+				<li>
+                    <img src="${base}${shuff.path}" alt=" " width="1920" height="500"/>
+                </li>
+	 		#end
+            </ul>
+            <a id="prev1" class="btn1 png_bg" href="javascript:void(0);"></a>
+            <a id="next1" class="btn2 png_bg" href="javascript:void(0);"></a>
+            <div id="JTab1" class="tab1">
+                <a class="ctrl" href="javascript:void(0);"></a>
+                <a class="ctrl" href="javascript:void(0);"></a>
+                <a class="ctrl" href="javascript:void(0);"></a>
+            </div>
+        </div>
+    </div>
+    <div class="area1">
+      <div class="inner">
+        <div class="lay-a">
+          <label class="txt">当前位置：</label>
+          <a href="#" target="_blank" title="贡茶">贡茶</a>
+          &gt;
+          <a href="#" target="_blank" title="加盟介绍">加盟介绍</a>
+        </div>
+        #set($mid_rg_pic_module = $all_module.get("join_mid_rg_pic"))
+        #set($mid_rg_pic = $adminUtils.getPictureList($mid_rg_pic_module.relateIds).get(0))
+        <a class="lay-b" href="#" target="_blank" title="贡茶">
+          <img src="${base}${mid_rg_pic.path}" width="390" height="80"/>
+        </a>
+      </div>
+    </div>
+
+    <div class="area2">
+      <div class="inner">
+      	#set($mid_news_module = $all_module.get("join_mid_news"))
+        #set($mid_news = $adminUtils.getNewsList($mid_news_module.relateIds))
+        #set($mid_news_pic_module = $all_module.get("join_mid_news_pic"))
+        #set($mid_news_pic = $adminUtils.getPictureList($mid_news_pic_module.relateIds))
+        #foreach($mid_new in $mid_news)
+        #set($picIndex = $velocityCount - 1)
+        #set($newspic = $mid_news_pic.get($picIndex))
+        <div class="part">
+          <img src="${base}${newspic.path}" width="250" height="150"/>
+          <div class="cont">
+            <a class="tit" href="#" target="_blank" title="">$mid_new.title</a>
+            <p class="desc">
+            	$mid_new.content
+            </p>
+            <label class="time">$dateUtils.format($mid_new.updateTime,"yyyy-MM-dd")</label>
+          </div>
+        </div>
+        #end
+      </div>
+    </div>
+
+    <div class="area3">
+      <div class="inner">
+        <a class="head" href="#" target="_blank" title="首页">首页</a>
+
+        <a class="prev" href="#" target="_blank" title="上一页">上一页</a>
+
+        <span class="pages">
+          <a class="item current" href="#" target="_blank">1</a>
+          <a class="item" href="#" target="_blank">2</a>
+          <a class="item" href="#" target="_blank">3</a>
+          <a class="item" href="#" target="_blank">4</a>
+          <a class="item" href="#" target="_blank">5</a>
+          <a class="item" href="#" target="_blank">6</a>
+        </span>
+
+        <a class="next" href="#" target="_blank" title="下一页">下一页</a>
+
+        <a class="last" href="#" target="_blank" title="末页">末页</a>
+
+        <span>
+          <label class="nums">共<i class="page-total">33</i>页</label>
+          <label class="nums"><i class="nums-total">66</i>条</label>
+        </span>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="inner">
+        <select class="link">
+           <option>友情链接</option>
+			#set($friends = $adminUtils.getCommonFriendLink())
+			#foreach($friend in $friends)
+           <option value="$friend.linkUrl" target="_blank">$friend.name</option>
+			#end
+        </select>
+        <label class="txt">@2014-2015</label>
+        <a class="sub-link" href="#" target="_blank">加盟官方网站</a>
+        <label class="txt">版权所有</label>
+        <a class="sub-link" href="#" target="_blank">站长统计</a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

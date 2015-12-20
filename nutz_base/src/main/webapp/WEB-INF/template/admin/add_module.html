@@ -1,0 +1,178 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="${base}/lib/html5.js?now=$dateUtils.getNow()"></script>
+<script type="text/javascript" src="${base}/lib/respond.min.js?now=$dateUtils.getNow()"></script>
+<script type="text/javascript" src="${base}/lib/PIE_IE678.js?now=$dateUtils.getNow()"></script>
+<![endif]-->
+<link href="${base}/css/H-ui.min.css?now=$dateUtils.getNow()" rel="stylesheet" type="text/css" />
+<link href="${base}/css/H-ui.admin.css?now=$dateUtils.getNow()" rel="stylesheet" type="text/css" />
+
+<link href="${base}/lib/Hui-iconfont/1.0.1/iconfont.css?now=$dateUtils.getNow()" rel="stylesheet" type="text/css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="${base}/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>添加模块</title>
+</head>
+#set($pictureList = $obj.pictureList)
+#set($newsList = $obj.newsList)
+#set($navList = $obj.navList)
+<body>
+<div class="pd-20">
+	<form action="addModule" method="post" class="form form-horizontal" id="form-module-add">
+		<input type="hidden" name="pageId" value="$!{p.pid}">
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-red">*</span>模块字符串标识：</label>
+			<div class="formControls col-5">
+				<input type="text" class="input-text" value="" placeholder="" id="strFlag" name="strFlag" datatype="*2-100" nullmsg="字符串标识不能为空">
+			</div>
+			<div class="col-4"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-red">*</span>模块类型：</label>
+			<div class="formControls col-5">
+			  <select id="relate_type" class="select-box" size="1" name="type" onchange="javascript:selectType(this.value);">
+			    <option value="1" selected>图片</option>
+			    <option value="2">资讯</option>
+			    <option value="3">导航</option>
+			  </select>
+			</div>
+			<div class="col-4"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-red">*</span>模块内容：</label>
+			<div id="type_pic" class="formControls col-5" style="display: none;">
+				#foreach($picture int $pictureList)
+					<input id="pic_${picture.id}" type="checkbox" name="relateId" value="${picture.id}">
+					<label for="pic_${picture.id}">$!{picture.name}</label>
+					&nbsp;&nbsp;
+				#end 
+			</div>
+			<div id="type_news" class="formControls col-5" style="display: none;">
+				#foreach($news int $newsList)
+					<input id="news_${news.id}" type="checkbox" name="relateId" value="${news.id}">
+					<label for="news_${news.id}">$!{news.title}</label>
+					&nbsp;&nbsp;
+				#end
+			</div>
+			<div id="type_nav" class="formControls col-5" style="display: none;">
+				#foreach($nav int $navList)
+					<input id="nav_${nav.id}" type="checkbox" name="relateId" value="${nav.id}">
+					<label for="nav_${nav.id}">$!{nav.name}</label>
+					&nbsp;&nbsp;
+				#end
+			</div>
+			<div class="col-4"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-grey">*</span>备注：</label>
+			<div class="formControls col-5">
+				<input type="text" class="input-text" value="" placeholder="" id="remark" name="remark" datatype="*0-250">
+			</div>
+			<div class="col-4"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-grey">*</span>ext1：</label>
+			<div class="formControls col-5">
+				<input type="text" class="input-text" value="" placeholder="" id="ext1" name="ext1" datatype="*0-250">
+			</div>
+			<div class="col-4"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-grey">*</span>ext2：</label>
+			<div class="formControls col-5">
+				<input type="text" class="input-text" value="" placeholder="" id="ext2" name="ext2" datatype="*0-250">
+			</div>
+			<div class="col-4"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-grey">*</span>ext3：</label>
+			<div class="formControls col-5">
+				<input type="text" class="input-text" value="" placeholder="" id="ext3" name="ext3" datatype="*0-250">
+			</div>
+			<div class="col-4"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-grey">*</span>ext4：</label>
+			<div class="formControls col-5">
+				<input type="text" class="input-text" value="" placeholder="" id="ext4" name="ext4" datatype="*0-250">
+			</div>
+			<div class="col-4"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-grey">*</span>ext5：</label>
+			<div class="formControls col-5">
+				<input type="text" class="input-text" value="" placeholder="" id="ext5" name="ext5" datatype="*0-250">
+			</div>
+			<div class="col-4"> </div>
+		</div>
+		<div class="row cl">
+			<div class="col-9 col-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</div>
+<script type="text/javascript" src="${base}/lib/jquery/1.9.1/jquery.min.js?now=$dateUtils.getNow()"></script> 
+<script type="text/javascript" src="${base}/lib/icheck/jquery.icheck.min.js?now=$dateUtils.getNow()"></script> 
+<script type="text/javascript" src="${base}/lib/Validform/5.3.2/Validform.min.js?now=$dateUtils.getNow()"></script> 
+<script type="text/javascript" src="${base}/lib/layer/1.9.3/layer.js?now=$dateUtils.getNow()"></script> 
+<script type="text/javascript" src="${base}/js/H-ui.js?now=$dateUtils.getNow()"></script> 
+<script type="text/javascript" src="${base}/js/H-ui.admin.js?now=$dateUtils.getNow()"></script> 
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-module-add").Validform({
+		tiptype:2
+	});
+	
+	if($("#relate_type").val() == 1){
+		$("#type_pic").show();
+		$("#type_news").hide();
+		$("#type_nav").hide();
+	}else if($("#relate_type").val() == 2){
+		$("#type_pic").hide();
+		$("#type_news").show();
+		$("#type_nav").hide();
+	}else{
+		$("#type_pic").hide();
+		$("#type_news").hide();
+		$("#type_nav").show();
+	}
+	
+	#if($obj && $obj == 200)
+		alert("添加成功!");
+		parent.refresh();
+	#end
+});
+function selectType(type){
+	if(type == 1){
+		$("#type_pic").show();
+		$("#type_news").hide();
+		$("#type_nav").hide();
+	}else if(type == 2){
+		$("#type_pic").hide();
+		$("#type_news").show();
+		$("#type_nav").hide();
+	}else{
+		$("#type_pic").hide();
+		$("#type_news").hide();
+		$("#type_nav").show();
+	}
+}
+</script>
+</body>
+</html>

@@ -112,6 +112,39 @@ public class NewsService {
 	}
 
 	/**
+	 * 获取所有的资讯
+	 * 
+	 * @return
+	 */
+	public List<News> getAllNews() {
+		try {
+			return newsDao.getAllNews();
+		} catch (Exception e) {
+			log.error("获取所有资讯出错!", e);
+		}
+		return null;
+	}
+
+	/**
+	 * 获取所有的资讯
+	 * 
+	 * @return
+	 */
+	public Map<Integer, News> getAllNews2Map() {
+		Map<Integer, News> map = new HashMap<Integer, News>();
+		try {
+			List<News> allNews = newsDao.getAllNews();
+			for (News news : allNews) {
+				map.put(news.getId(), news);
+			}
+			return map;
+		} catch (Exception e) {
+			log.error("获取所有资讯出错!", e);
+		}
+		return null;
+	}
+
+	/**
 	 * 根据id获取资讯
 	 * 
 	 * @param newsId

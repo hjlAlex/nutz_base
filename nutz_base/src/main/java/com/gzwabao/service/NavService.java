@@ -98,6 +98,39 @@ public class NavService {
 	}
 
 	/**
+	 * 获取所有导航
+	 * 
+	 * @return
+	 */
+	public List<Navigation> getAllNav() {
+		try {
+			return navDao.getAllNav();
+		} catch (Exception e) {
+			log.error("获取导航列表出错!", e);
+		}
+		return null;
+	}
+
+	/**
+	 * 获取所有导航
+	 * 
+	 * @return
+	 */
+	public Map<Integer, Navigation> getAllNav2Map() {
+		Map<Integer, Navigation> map = new HashMap<Integer, Navigation>();
+		try {
+			List<Navigation> allNavs = navDao.getAllNav();
+			for (Navigation navigation : allNavs) {
+				map.put(navigation.getId(), navigation);
+			}
+			return map;
+		} catch (Exception e) {
+			log.error("获取导航列表出错!", e);
+		}
+		return null;
+	}
+
+	/**
 	 * 根据id获取导航
 	 * 
 	 * @param nid

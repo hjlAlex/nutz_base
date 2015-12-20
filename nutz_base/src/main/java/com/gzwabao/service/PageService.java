@@ -112,6 +112,21 @@ public class PageService {
 	}
 
 	/**
+	 * 根据strId获取页面
+	 * 
+	 * @param sid
+	 * @return
+	 */
+	public Page getPageByStrId(String sid) {
+		try {
+			return pageDao.getByStrId(sid);
+		} catch (Exception e) {
+			log.error("获取页面失败!sid=" + sid, e);
+		}
+		return null;
+	}
+
+	/**
 	 * 更新页面
 	 * 
 	 * @param oldId

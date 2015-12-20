@@ -77,6 +77,39 @@ public class PictureService {
 	}
 
 	/**
+	 * 获取所有的图片
+	 * 
+	 * @return
+	 */
+	public List<Picture> getAllPicture() {
+		try {
+			return pictureDao.getAllPicture();
+		} catch (Exception e) {
+			log.error("获取所有图片出错!", e);
+		}
+		return null;
+	}
+
+	/**
+	 * 获取所有的图片
+	 * 
+	 * @return
+	 */
+	public Map<Integer, Picture> getAllPicture2Map() {
+		Map<Integer, Picture> map = new HashMap<Integer, Picture>();
+		try {
+			List<Picture> allPictures = pictureDao.getAllPicture();
+			for (Picture picture : allPictures) {
+				map.put(picture.getId(), picture);
+			}
+			return map;
+		} catch (Exception e) {
+			log.error("获取所有图片出错!", e);
+		}
+		return null;
+	}
+
+	/**
 	 * 添加图片
 	 * 
 	 * @param tf

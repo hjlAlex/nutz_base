@@ -13,6 +13,6 @@ import com.gzwabao.entity.Module;
  */
 @IocBean
 public class ModuleDao extends BaseDao<Module> {
-	// private static final Log log = Logs.getLog(PageDao.class);
+	// private static final Log log = Logs.getLog(ModuleDao.class);
 
 }

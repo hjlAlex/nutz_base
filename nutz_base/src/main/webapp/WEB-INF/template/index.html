@@ -1,184 +1,223 @@
-﻿<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="renderer" content="webkit|ie-comp|ie-stand">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-	<meta http-equiv="Cache-Control" content="no-siteapp" />
-	<LINK rel="Bookmark" href="/favicon.ico" >
-	<LINK rel="Shortcut Icon" href="/favicon.ico" />
-	<!--[if lt IE 9]>
-		<script type="text/javascript" src="${base}/lib/html5.js"></script>
-		<script type="text/javascript" src="${base}/lib/respond.min.js"></script>
-		<script type="text/javascript" src="${base}/lib/PIE_IE678.js"></script>
-	<![endif]-->
-	<link href="${base}/css/H-ui.min.css" rel="stylesheet" type="text/css" />
-	<link href="${base}/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
-	<link href="${base}/skin/default/skin.css" rel="stylesheet" type="text/css" id="skin" />
-	<link href="${base}/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
-	<link href="${base}/css/style.css" rel="stylesheet" type="text/css" />
-	<!--[if IE 6]>
-		<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
-		<script>DD_belatedPNG.fix('*');</script>
-	<![endif]-->
-	<title>H-ui.admin v2.3</title>
-	<meta name="keywords" content="H-ui.admin v2.3,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
-	<meta name="description" content="H-ui.admin v2.3，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+    <meta charset="UTF-8">
+    <title>贡茶</title>
+    <link type="text/css" rel="stylesheet" href="${base}/css/screen.css"/>
+    <link type="text/css" rel="stylesheet" href="${base}/css/common.css"/>
+    <link type="text/css" rel="stylesheet" href="${base}/css/index.css"/>
+    <script type="text/javascript" src="${base}/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${base}/js/jquery.slide.js"></script>
+    <script type="text/javascript" src="${base}/js/index.js"></script>
 </head>
-#set($param = $request.getAttribute("array"))
+#set($all_module = $obj)
 <body>
-<header class="Hui-header cl"> <a class="Hui-logo l" title="H-ui.admin v2.3" href="/">H-ui.admin</a> <a class="Hui-logo-m l" href="/" title="H-ui.admin">H-ui</a> <span class="Hui-subtitle l">V2.3</span>
-	<nav class="mainnav cl" id="Hui-nav">
-		<ul>
-			<li class="dropDown dropDown_click"><a href="javascript:;" class="dropDown_A"><i class="Hui-iconfont">&#xe600;</i> 新增 <i class="Hui-iconfont">&#xe6d5;</i></a>
-				<ul class="dropDown-menu radius box-shadow">
-					<li><a href="javascript:;" onclick="article_add('添加资讯','article-add.html')"><i class="Hui-iconfont">&#xe616;</i> 资讯</a></li>
-					<li><a href="javascript:;" onclick="picture_add('添加资讯','picture-add.html')"><i class="Hui-iconfont">&#xe613;</i> 图片</a></li>
-					<li><a href="javascript:;" onclick="product_add('添加资讯','product-add.html')"><i class="Hui-iconfont">&#xe620;</i> 产品</a></li>
-					<li><a href="javascript:;" onclick="member_add('添加用户','member-add.html','','510')"><i class="Hui-iconfont">&#xe60d;</i> 用户</a></li>
-				</ul>
-			</li>
-		</ul>
-	</nav>
-	<ul class="Hui-userbar">
-		<li>$param</li>
-		<li class="dropDown dropDown_hover"><a href="#" class="dropDown_A">admin <i class="Hui-iconfont">&#xe6d5;</i></a>
-			<ul class="dropDown-menu radius box-shadow">
-				<li><a href="#">个人信息</a></li>
-				<li><a href="#">切换账户</a></li>
-				<li><a href="#">退出</a></li>
-			</ul>
-		</li>
-		<li id="Hui-msg"> <a href="#" title="消息"><span class="badge badge-danger">1</span><i class="Hui-iconfont" style="font-size:18px">&#xe68a;</i></a> </li>
-		<li id="Hui-skin" class="dropDown right dropDown_hover"><a href="javascript:;" title="换肤"><i class="Hui-iconfont" style="font-size:18px">&#xe62a;</i></a>
-			<ul class="dropDown-menu radius box-shadow">
-				<li><a href="javascript:;" data-val="default" title="默认（黑色）">默认（黑色）</a></li>
-				<li><a href="javascript:;" data-val="blue" title="蓝色">蓝色</a></li>
-				<li><a href="javascript:;" data-val="green" title="绿色">绿色</a></li>
-				<li><a href="javascript:;" data-val="red" title="红色">红色</a></li>
-				<li><a href="javascript:;" data-val="yellow" title="黄色">黄色</a></li>
-				<li><a href="javascript:;" data-val="orange" title="绿色">橙色</a></li>
-			</ul>
-		</li>
-	</ul>
-	<a aria-hidden="false" class="Hui-nav-toggle" href="#"></a> </header>
-<aside class="Hui-aside">
-	<input runat="server" id="divScrollValue" type="hidden" value="" />
-	<div class="menu_dropdown bk_2">
-		<dl id="menu-picture">
-			<dt><i class="Hui-iconfont">&#xe613;</i> 图片管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-			<dd>
-				<ul>
-					<li><a _href="picture-list.html" href="javascript:void(0)">图片管理</a></li>
-				</ul>
-			</dd>
-		</dl>
-		<dl id="menu-product">
-			<dt><i class="Hui-iconfont">&#xe620;</i> 产品管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-			<dd>
-				<ul>
-					<li><a _href="product-brand.html" href="javascript:void(0)">品牌管理</a></li>
-					<li><a _href="product-category.html" href="javascript:void(0)">分类管理</a></li>
-					<li><a _href="product-list.html" href="javascript:void(0)">产品管理</a></li>
-				</ul>
-			</dd>
-		</dl>
-		<!--<dl id="menu-page">
-			<dt><i class="Hui-iconfont">&#xe626;</i> 页面管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-			<dd>
-				<ul>
-					<li><a _href="page-home.html" href="javascript:void(0)">首页管理</a></li>
-					<li><a _href="page-flinks.html" href="javascript:void(0)">友情链接</a></li>
-				</ul>
-			</dd>
-		</dl>-->
-		<dl id="menu-comments">
-			<dt><i class="Hui-iconfont">&#xe622;</i> 评论管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-			<dd>
-				<ul>
-					<li><a _href="http://h-ui.duoshuo.com/admin/" href="javascript:;">评论列表</a></li>
-					<li><a _href="feedback-list.html" href="javascript:void(0)">意见反馈</a></li>
-				</ul>
-			</dd>
-		</dl>
-		<dl id="menu-member">
-			<dt><i class="Hui-iconfont">&#xe60d;</i> 会员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-			<dd>
-				<ul>
-					<li><a _href="member-list.html" href="javascript:;">会员列表</a></li>
-					<li><a _href="member-del.html" href="javascript:;">删除的会员</a></li>
-					<li><a _href="member-level.html" href="javascript:;">等级管理</a></li>
-					<li><a _href="member-scoreoperation.html" href="javascript:;">积分管理</a></li>
-					<li><a _href="member-record-browse.html" href="javascript:void(0)">浏览记录</a></li>
-					<li><a _href="member-record-download.html" href="javascript:void(0)">下载记录</a></li>
-					<li><a _href="member-record-share.html" href="javascript:void(0)">分享记录</a></li>
-				</ul>
-			</dd>
-		</dl>
-		<dl id="menu-system">
-			<dt><i class="Hui-iconfont">&#xe62e;</i> 系统管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-			<dd>
-				<ul>
-					<li><a _href="user_list.html" href="javascript:void(0)">管理员管理</a></li>
-				</ul>
-			</dd>
-		</dl>
-	</div>
-</aside>
-<div class="dislpayArrow"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
-<section class="Hui-article-box">
-	<div id="Hui-tabNav" class="Hui-tabNav">
-		<div class="Hui-tabNav-wp">
-			<ul id="min_title_list" class="acrossTab cl">
-				<li class="active"><span title="我的桌面" data-href="welcome.html">我的桌面</span><em></em></li>
-			</ul>
-		</div>
-		<div class="Hui-tabNav-more btn-group"><a id="js-tabNav-prev" class="btn radius btn-default size-S" href="javascript:;"><i class="Hui-iconfont">&#xe6d4;</i></a><a id="js-tabNav-next" class="btn radius btn-default size-S" href="javascript:;"><i class="Hui-iconfont">&#xe6d7;</i></a></div>
-	</div>
-	<div id="iframe_box" class="Hui-article">
-		<div class="show_iframe">
-			<div style="display:none" class="loading"></div>
-			<iframe scrolling="yes" frameborder="0" src="${base}/index/welcome"></iframe>
-		</div>
-	</div>
-</section>
-<script type="text/javascript" src="${base}/lib/jquery/1.9.1/jquery.min.js"></script> 
-<script type="text/javascript" src="${base}/lib/layer/1.9.3/layer.js"></script> 
-<script type="text/javascript" src="${base}/js/H-ui.js"></script> 
-<script type="text/javascript" src="${base}/js/H-ui.admin.js"></script> 
-<script type="text/javascript">
-/*资讯-添加*/
-function article_add(title,url){
-	var index = layer.open({
-		type: 2,
-		title: title,
-		content: url
-	});
-	layer.full(index);
-}
-/*图片-添加*/
-function picture_add(title,url){
-	var index = layer.open({
-		type: 2,
-		title: title,
-		content: url
-	});
-	layer.full(index);
-}
-/*产品-添加*/
-function product_add(title,url){
-	var index = layer.open({
-		type: 2,
-		title: title,
-		content: url
-	});
-	layer.full(index);
-}
-/*用户-添加*/
-function member_add(title,url,w,h){
-	layer_show(title,url,w,h);
-}
-</script> 
+<div class="doc">
+    <div class="wrapper">
+
+        <div class="header">
+            <div class="inner">
+            	#set($logo = $adminUtils.getCommonLogo())
+                <a class="lay-a" href="#" title="${logo.ext1}" target="_blank">
+                    <img src="${base}${logo.path}" width="120" height="90">
+                </a>
+                
+                <div class="lay-b">
+					#set($navs = $adminUtils.getCommonNav())
+                    #foreach($nav in $navs)
+						<a class="item" href="${base}${nav.linkUrl}" title="${nav.name}" target="_blank">
+                            <label class="tit">${nav.name}</label>
+                            <label class="desc">${nav.ext1}</label>
+                        </a>
+					#end
+                </div>
+            </div>
+        </div>
+
+        <div class="banner">
+            <div id="JSlide1" class="slide1">
+				#set($shuffs = $adminUtils.getCommonPicture())
+                <ul class="pics">
+					 #foreach($shuff in $shuffs)
+						<li>
+                            <img src="${base}${shuff.path}" alt=" " width="1920" height="500"/>
+                        </li>
+					 #end
+                </ul>
+                <a id="prev1" class="btn1 png_bg" href="javascript:void(0);"></a>
+                <a id="next1" class="btn2 png_bg" href="javascript:void(0);"></a>
+                <div id="JTab1" class="tab1">
+                    <a class="ctrl" href="javascript:void(0);"></a>
+                    <a class="ctrl" href="javascript:void(0);"></a>
+                    <a class="ctrl" href="javascript:void(0);"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="area1">
+            <div class="inner">
+				#set($mid_news_module = $all_module.get("index_mid_news"))
+				#set($mid_news = $adminUtils.getNewsList(${mid_news_module.relateIds}).get(0))
+                <div class="lay-a">
+                    <label class="tit">${mid_news.title}</label>
+                </div>
+                <div class="lay-b">
+                    <div class="part-a">
+                        <label class="tit">${mid_news_module.ext1}</label>
+                        <p class="desc">
+							${mid_news.content}
+                        </p>
+                    </div>
+					#set($mid_pic_module = $all_module.get("index_mid_pic"))
+					#set($mid_pics = $adminUtils.getPictureList(${mid_pic_module.relateIds}))
+                    <div class="part-b">
+						#foreach($mid_pic in $mid_pics)
+                        <img class="item" src="${base}${mid_pic.path}" width="185" height="185"/>
+						#end
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="area2">
+			#set($mid_shuff_module = $all_module.get("index_mid_shuff"))
+			#set($mid_shuffs = $adminUtils.getPictureList(${mid_shuff_module.relateIds}))
+            <div class="inner">
+                <h3>${mid_shuff_module.ext1}</h3>
+                <div id="JSlide2" class="slide2">
+                    <ul>
+						#foreach($mid_shuff in $mid_shuffs)
+							<li class="item">
+                                <img src="${base}${mid_shuff.path}" width="285" height="295"/>
+                            </li>
+						#end
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="area3">
+            <div class="inner">
+				#set($mid_buttom_news_module = $all_module.get("index_mid_buttom_news"))
+				#set($mid_buttom_news = $adminUtils.getNewsList(${mid_buttom_news_module.relateIds}).get(0))
+				#set($mid_buttom_pic_module = $all_module.get("index_mid_buttom_pic"))
+				#set($mid_buttom_pics = $adminUtils.getPictureList(${mid_buttom_pic_module.relateIds}))
+                <div class="lay-a">
+                    <label>${mid_buttom_news.title}</label>
+                </div>
+                <p class="lay-b">
+					${mid_buttom_news.content}
+                </p>
+                <div class="lay-c">
+					#foreach($mid_buttom_pic in $mid_buttom_pics)
+                    <div class="part">
+                        <img src="${base}${mid_buttom_pic.path}" width="60" height="60"/>
+                        <label class="tit">${mid_buttom_pic.ext1}</label>
+                        <label class="desc">${mid_buttom_pic.ext2}</label>
+                    </div>
+					#end
+                </div>
+            </div>
+        </div>
+
+        <div class="area4">
+            <div class="inner">
+                <div class="lay-a">
+                    <label class="tit">最新资讯</label>
+					#set($bottom_left_module = $all_module.get("index_buttom_left"))
+                    #set($bottom_left_news = $adminUtils.getNewsList(${bottom_left_module.relateIds}))
+					<ul>
+						#foreach($bottom_left_new in $bottom_left_news)
+							<li class="item #if($velocityCount < 3) top #end">
+                               <a href="#" target="_blank" title="$bottom_left_new.title">
+                                   <label class="txt">$bottom_left_new.title</label>
+                                   <label class="time">$dateUtils.format($bottom_left_new.updateTime,"MM-dd")</label>
+                               </a>
+                            </li>
+						#end
+                    </ul>
+                </div>
+
+                <div class="lay-b">
+					#set($bottom_rig_pics_module = $all_module.get("index_buttom_right_pic"))
+                    #set($bottom_rig_pics = $adminUtils.getPictureList(${bottom_rig_pics_module.relateIds}))
+					#set($bottom_rig_news_module = $all_module.get("index_buttom_right_news"))
+                    #set($bottom_rig_news = $adminUtils.getNewsList(${bottom_rig_news_module.relateIds}))
+                    <label class="tit">最新资讯</label>
+                    <div class="part">
+						#set($bottom_rig_pic1 = $bottom_rig_pics.get(0))
+                        <img src="${base}${bottom_rig_pic1.path}" width="150" height="100"/>
+                        #set($bottom_rig_new1 = $bottom_rig_news.get(0))
+						<div class="cont">
+                            <label class="cont-tit">$bottom_rig_new1.title</label>
+                            <p class="desc">
+								$bottom_rig_new1.content
+                            </p>
+                        </div>
+                    </div>
+                    <div class="part">
+						#set($bottom_rig_pic2 = $bottom_rig_pics.get(1))
+                        <img src="${base}${bottom_rig_pic2.path}" width="150" height="100"/>
+                         #set($bottom_rig_new2 = $bottom_rig_news.get(1))
+						<div class="cont">
+                            <label class="cont-tit">$bottom_rig_new2.title</label>
+                            <p class="desc">
+								$bottom_rig_new2.content
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="inner">
+                <select class="link">
+                    <option>友情链接</option>
+					#set($friends = $adminUtils.getCommonFriendLink())
+					#foreach($friend in $friends)
+                    <option value="$friend.linkUrl" target="_blank">$friend.name</option>
+					#end
+                </select>
+                <label class="txt">@2014-2015</label>
+                <a class="sub-link" href="#" target="_blank">加盟官方网站</a>
+                <label class="txt">版权所有</label>
+                <a class="sub-link" href="#" target="_blank">站长统计</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="floatIcon" id="world_D02_30">
+        <div class="fi-box">
+            <a href="javascript:void();" class="r2">
+                <div class="td">
+                    <i></i>
+                    <img src="http://dummyimage.com/80x80/B5E61D/fff" alt=" " width="80" height="80"/>
+                    <p>微信服务号</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="fi-box">
+            <a href="#" class="r4">
+                <div class="td">
+                    <i></i>
+                    <p>加盟热线：</p>
+                    <p>400-890-8753</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="fi-box">
+            <a href="#" class="r5">
+                <div class="td"><i></i>haiwai@xx.com</div>
+            </a>
+        </div>
+
+        <div class="fi-box">
+            <a href="javascript:void();" class="r6" id="to_top"></a>
+        </div>
+    </div>
+</div>
 </body>
 </html>

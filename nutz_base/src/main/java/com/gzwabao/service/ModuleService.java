@@ -4,7 +4,11 @@
 package com.gzwabao.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.nutz.dao.Cnd;
@@ -30,13 +34,14 @@ public class ModuleService {
 	private ModuleDao moduleDao;
 
 	/**
-	 * 新增一个模块v
+	 * 新增一个模块
 	 * 
 	 * @param module
+	 * @param req
 	 * @return
 	 * @since 2015年12月18日 下午1:26:32
 	 */
-	public int addModule(Module module) {
+	public int addModule(Module module, HttpServletRequest req) {
 		int result = 400;
 		try {
 			if (StringUtils.isBlank(module.getStrFlag())) {
@@ -51,10 +56,18 @@ public class ModuleService {
 				log.error("模块所属类型非法!");
 				return result;
 			}
-			if (StringUtils.isBlank(module.getRelateIds())) {
+			// 处理关联实体
+			String[] relateIds = req.getParameterValues("relateId");
+			if (null == relateIds || 0 == relateIds.length) {
 				log.error("模块关联实体非法!");
 				return result;
 			}
+			StringBuilder rids = new StringBuilder("");
+			for (String relateId : relateIds) {
+				rids.append(relateId).append(",");
+			}
+			rids = rids.deleteCharAt(rids.length() - 1);
+			module.setRelateIds(rids.toString());
 			return moduleDao.save(module) != null ? 200 : 400;
 		} catch (Exception e) {
 			log.error("新增模块失败!strFalg=" + module.getStrFlag(), e);
@@ -88,6 +101,24 @@ public class ModuleService {
 	}
 
 	/**
+	 * 获取页面模块map
+	 * 
+	 * @param pageId
+	 * @return
+	 */
+	public Map<String, Module> getModuleMap(int pageId) {
+		Map<String, Module> resultMap = new HashMap<String, Module>();
+		List<Module> resultList = getModuleList(pageId);
+		if (null == resultList || 0 == resultList.size()) {
+			return resultMap;
+		}
+		for (Module module : resultList) {
+			resultMap.put(module.getStrFlag(), module);
+		}
+		return resultMap;
+	}
+
+	/**
 	 * 根据id获取模块
 	 * 
 	 * @param mid
@@ -104,13 +135,15 @@ public class ModuleService {
 	}
 
 	/**
-	 * 更新页面
+	 * 更新模块
 	 * 
 	 * @param oldId
-	 * @param page
+	 * @param module
+	 * @param req
 	 * @return
 	 */
-	public int updateModuleByOid(int oldId, Module module) {
+	public int updateModuleByOid(int oldId, Module module,
+			HttpServletRequest req) {
 		int result = 400;
 		try {
 			Module oldModule = getModuleById(oldId);
@@ -118,14 +151,23 @@ public class ModuleService {
 				log.error("模块不存在!");
 				return result;
 			}
+			if (!oldModule.getStrFlag().equals(module.getStrFlag())) {
+				oldModule.setStrFlag(module.getStrFlag());
+			}
 			if (oldModule.getPageId() != module.getPageId()) {
 				oldModule.setPageId(module.getPageId());
 			}
 			if (oldModule.getType() != module.getType()) {
 				oldModule.setType(module.getType());
 			}
-			if (StringUtils.isNotBlank(module.getRelateIds())) {
-				oldModule.setRelateIds(module.getRelateIds());
+			String[] relateIds = req.getParameterValues("relateId");
+			StringBuilder rids = new StringBuilder("");
+			for (String relateId : relateIds) {
+				rids.append(relateId).append(",");
+			}
+			rids = rids.deleteCharAt(rids.length() - 1);
+			if (!oldModule.getRelateIds().equals(rids.toString())) {
+				oldModule.setRelateIds(rids.toString());
 			}
 			if (StringUtils.isNotBlank(module.getRemark())) {
 				oldModule.setRemark(module.getRemark());

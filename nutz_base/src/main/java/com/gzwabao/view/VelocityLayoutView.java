@@ -24,6 +24,7 @@ import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.config.AtMap;
 import org.nutz.mvc.view.AbstractPathView;
 
+import com.gzwabao.util.AdminUtil;
 import com.gzwabao.util.CacheUtil;
 import com.gzwabao.util.DateUtil;
 
@@ -56,6 +57,8 @@ public class VelocityLayoutView extends AbstractPathView {
 			context.put("session", req.getSession());
 			context.put("stringUtils", stringUtils);
 			context.put("dateUtils", dateUtils);
+			context.put("adminUtils",
+					Mvcs.ctx().getDefaultIoc().get(AdminUtil.class));
 			context.put("cacheUtil",
 					Mvcs.ctx().getDefaultIoc().get(CacheUtil.class));
 			// 请求的参数表,需要兼容之前的p.参数, Fix issue 418
