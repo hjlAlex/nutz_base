@@ -72,4 +72,40 @@ public class FrontAction {
 		return null;
 	}
 
+	/**
+	 * 奶茶饮品
+	 * 
+	 * @return
+	 */
+	@At("/tea")
+	@Ok("vm:template.tea")
+	public Map<String, Module> tea() {
+
+		return null;
+	}
+
+	/**
+	 * 新闻中心
+	 * 
+	 * @return
+	 */
+	@At("/news")
+	@Ok("vm:template.news")
+	public Map<String, Module> news() {
+
+		return null;
+	}
+
+	/**
+	 * 申请加盟
+	 * 
+	 * @return
+	 */
+	@At("/join_apply")
+	@Ok("vm:template.join_apply")
+	public Map<String, Module> joinApply() {
+
+		return null;
+	}
+
 }
