@@ -18,6 +18,7 @@ import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.TempFile;
 import org.nutz.mvc.upload.UploadAdaptor;
 
+import com.gzwabao.entity.Apply;
 import com.gzwabao.entity.Module;
 import com.gzwabao.entity.Navigation;
 import com.gzwabao.entity.News;
@@ -25,6 +26,7 @@ import com.gzwabao.entity.Page;
 import com.gzwabao.entity.Picture;
 import com.gzwabao.entity.User;
 import com.gzwabao.filter.LoginFilter;
+import com.gzwabao.service.ApplyService;
 import com.gzwabao.service.ModuleService;
 import com.gzwabao.service.NavService;
 import com.gzwabao.service.NewsService;
@@ -60,6 +62,9 @@ public class AdminAction {
 
 	@Inject(value = "moduleService")
 	private ModuleService moduleService;
+
+	@Inject(value = "applyService")
+	private ApplyService applyService;
 
 	/**
 	 * 管理首页
@@ -631,5 +636,28 @@ public class AdminAction {
 	@Ok("raw:html")
 	public int deleteMoreModule(@Param("mIds") String mIds) {
 		return moduleService.delMoreModule(mIds);
+	}
+
+	// ===============模块业务结束
+	// ===============申请业务结束
+	@At("/apply_list")
+	@Ok("vm:template.admin.apply_list")
+	public Map<String, Object> getApplyList(@Param("curPage") int curPage,
+			@Param("pageSize") int pageSize, @Param("datemin") String datemin,
+			@Param("datemax") String datemax, @Param("keyword") String keyword) {
+		return applyService.getApplyList(curPage, pageSize, datemin, datemax,
+				keyword);
+	}
+
+	@At("/update_apply")
+	@Ok("vm:template.admin.update_apply")
+	public Apply toUpdateApply(@Param("applyId") int applyId) {
+		return applyService.getApplyById(applyId);
+	}
+
+	@At("/updateApply")
+	@Ok("vm:template.admin.update_apply")
+	public int updateApply(@Param("..") Apply apply, @Param("oldId") int oldId) {
+		return applyService.updateApplyByOid(oldId, apply);
 	}
 }
