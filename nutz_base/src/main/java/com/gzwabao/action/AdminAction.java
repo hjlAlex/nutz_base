@@ -639,7 +639,7 @@ public class AdminAction {
 	}
 
 	// ===============模块业务结束
-	// ===============申请业务结束
+	// ===============申请业务开始
 	@At("/apply_list")
 	@Ok("vm:template.admin.apply_list")
 	public Map<String, Object> getApplyList(@Param("curPage") int curPage,
@@ -660,4 +660,29 @@ public class AdminAction {
 	public int updateApply(@Param("..") Apply apply, @Param("oldId") int oldId) {
 		return applyService.updateApplyByOid(oldId, apply);
 	}
+
+	/**
+	 * 删除加盟申请
+	 * 
+	 * @param delId
+	 * @return
+	 */
+	@At("/deleteApply")
+	@Ok("raw:html")
+	public int deleteApply(@Param("delId") int delId) {
+		return applyService.delApplyById(delId);
+	}
+
+	/**
+	 * 删除加盟申请
+	 * 
+	 * @param aIds
+	 * @return
+	 */
+	@At("/deleteMoreApply")
+	@Ok("raw:html")
+	public int deleteMoreApply(@Param("applyIds") String applyIds) {
+		return applyService.delMoreApply(applyIds);
+	}
+	// ===============申请业务结束
 }

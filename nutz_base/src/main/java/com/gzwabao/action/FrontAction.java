@@ -6,9 +6,12 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
+import org.nutz.mvc.annotation.Param;
 
+import com.gzwabao.entity.Apply;
 import com.gzwabao.entity.Module;
 import com.gzwabao.entity.Page;
+import com.gzwabao.service.ApplyService;
 import com.gzwabao.service.ModuleService;
 import com.gzwabao.service.PageService;
 
@@ -26,6 +29,9 @@ public class FrontAction {
 
 	@Inject(value = "moduleService")
 	private ModuleService moduleService;
+
+	@Inject(value = "applyService")
+	private ApplyService applyService;
 
 	/**
 	 * 首页
@@ -97,7 +103,7 @@ public class FrontAction {
 	}
 
 	/**
-	 * 申请加盟
+	 * 申请加盟页面
 	 * 
 	 * @return
 	 */
@@ -108,4 +114,9 @@ public class FrontAction {
 		return null;
 	}
 
+	@At("/applyJoin")
+	@Ok("vm:template.admin.join_apply")
+	public int applyJoin(@Param("..") Apply apply) {
+		return applyService.addApply(apply);
+	}
 }
