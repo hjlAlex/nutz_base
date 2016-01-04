@@ -60,8 +60,8 @@
 				<td>$!{news_obj.id}</td>
 				<td>$!{news_obj.title}</td>
 				<td>$!{news_obj.remark}</td>
-				<td>$!{news_obj.createTime}</td>
-				<td>$!{news_obj.updateTime}</td>
+				<td>$dateUtils.format($!{news_obj.createTime})</td>
+				<td>$dateUtils.format($!{news_obj.updateTime})</td>
 				<td class="td-manage">
 					<a title="编辑" href="javascript:;" onclick="news_edit('资讯编辑','update_news.html','$!{news_obj.id}')" class="ml-6" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
 					&nbsp;&nbsp;&nbsp;&nbsp;

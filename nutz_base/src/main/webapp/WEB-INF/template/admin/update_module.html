@@ -53,21 +53,21 @@
 			<label class="form-label col-3"><span class="c-red">*</span>模块内容：</label>
 			<div id="type_pic" class="formControls col-5" style="display: none;">
 				#foreach($picture int $pictureList)
-					<input id="pic_${picture.id}" type="checkbox" name="relateId" value="${picture.id}" #if($adminUtils.isChecked($!{module.relateIds},${picture.id})) checked="checked" #end>
+					<input id="pic_${picture.id}" type="checkbox" name="relateId" value="${picture.id}" #if($module.type == 1 && $adminUtils.isChecked($!{module.relateIds},${picture.id})) checked="checked" #end>
 					<label for="pic_${picture.id}">$!{picture.name}</label>
 					&nbsp;&nbsp;
 				#end 
 			</div>
 			<div id="type_news" class="formControls col-5" style="display: none;">
 				#foreach($news int $newsList)
-					<input id="news_${news.id}" type="checkbox" name="relateId" value="${news.id}" #if($adminUtils.isChecked($!{module.relateIds},${news.id})) checked="checked" #end>
+					<input id="news_${news.id}" type="checkbox" name="relateId" value="${news.id}" #if($module.type == 2 && $adminUtils.isChecked($!{module.relateIds},${news.id})) checked="checked" #end>
 					<label for="news_${news.id}">$!{news.title}</label>
 					&nbsp;&nbsp;
 				#end
 			</div>
 			<div id="type_nav" class="formControls col-5" style="display: none;">
 				#foreach($nav int $navList)
-					<input id="nav_${nav.id}" type="checkbox" name="relateId" value="${nav.id}" #if($adminUtils.isChecked($!{module.relateIds},${nav.id})) checked="checked" #end>
+					<input id="nav_${nav.id}" type="checkbox" name="relateId" value="${nav.id}" #if($module.type == 3 && $adminUtils.isChecked($!{module.relateIds},${nav.id})) checked="checked" #end>
 					<label for="nav_${nav.id}">$!{nav.name}</label>
 					&nbsp;&nbsp;
 				#end
