@@ -22,13 +22,13 @@
 		<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
 		<script>DD_belatedPNG.fix('*');</script>
 	<![endif]-->
-	<title>H-ui.admin v2.3</title>
+	<title>皇茶网站后台管理</title>
 	<meta name="keywords" content="H-ui.admin v2.3,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
 	<meta name="description" content="H-ui.admin v2.3，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
 </head>
 #set($login_user = $session.getAttribute("session_user"))
 <body>
-<header class="Hui-header cl"> <a class="Hui-logo l" title="H-ui.admin v2.3" href="#">H-ui.admin</a> <a class="Hui-logo-m l" href="#" title="H-ui.admin">H-ui</a> <span class="Hui-subtitle l">V2.3</span>
+<header class="Hui-header cl"> <a class="Hui-logo l" title="皇茶网站后台管理" href="#">皇茶网站后台管理</a> <a class="Hui-logo-m l" href="#" title="皇茶网站后台管理"></a> <span class="Hui-subtitle l"></span>
 	<nav class="mainnav cl" id="Hui-nav">
 	</nav>
 	<ul class="Hui-userbar">
@@ -88,6 +88,16 @@
 				</ul>
 			</dd>
 		</dl>
+		
+		<dl id="menu-apply">
+			<dt><i class="Hui-iconfont">&#xe62e;</i> 加盟管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a _href="apply_list.html" href="javascript:void(0)">加盟列表</a></li>
+				</ul>
+			</dd>
+		</dl>
+		
 		<dl id="menu-system">
 			<dt><i class="Hui-iconfont">&#xe62e;</i> 系统管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
