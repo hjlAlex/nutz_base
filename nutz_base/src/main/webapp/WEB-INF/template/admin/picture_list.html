@@ -28,6 +28,21 @@
 <div class="pd-20">
 	<div class="text-r">
 		<form action="picture_list" method="post">
+			只看该页面:
+			<select id="first">
+			  	<option value="0">--请选择--</option>
+				#foreach($page_obj in $adminUtils.getAllPages())
+					<option value="$page_obj.id">$page_obj.remark</option>
+				#end			  	
+		    </select>
+		  	<select id="second"></select>
+		  	#foreach($page_obj in $adminUtils.getAllPages())
+		  		<input id="${page_obj.id}_relateIds" type="hidden" value="$adminUtils.getRelateIdsByPageId($page_obj.id,1)">
+		  		#foreach($module_obj in $adminUtils.getAllModuleByPageId($page_obj.id,1))
+		  			<input id="${page_obj.id}_${module_obj.id}_relateIds" type="hidden" value="$adminUtils.getRelateIdsByModuleId($module_obj.id)">
+		  		#end
+		  	#end
+		  	<input id="relateIds" type="hidden" name="relateIds">
 			<input type="text" class="input-text" style="width:250px" placeholder="输入图片名称" id="" name="keyword">
 			<button type="submit" class="btn btn-success" id=""><i class="Hui-iconfont">&#xe665;</i> 搜图片</button>
 		</form>
@@ -119,8 +134,55 @@ $(function(){
     		}
     	});
     	$("#chkAll").prop("checked", state);
-    });  
+    }); 
+    
+    if($("#first").val() == 0){
+		$("#second").prop("disabled","disabled");
+	}else{
+		$("#second").prop("disabled","");
+	}
+	$("#first").change(function() {
+		if($("#first").val() != 0){
+			$("#second").prop("disabled","");
+			addOption($("#first").val());
+		}else{
+			$("#second").empty();
+			$("#second").prop("disabled","disabled");
+		}
+		confirmRelateIds();
+	});
+	$("#second").change(function() {
+		confirmRelateIds();
+	});
 });
+function addOption(firstOptVal){
+	$("#second").empty();
+	$("#second").append("<option value='0'>--请选择--</option>");
+	#foreach($p_obj in $adminUtils.getAllPages())
+		var pageId = "$p_obj.id";
+		if(pageId == firstOptVal){
+			#foreach($m_obj in $adminUtils.getAllModuleByPageId($p_obj.id,1))
+				$("#second").append("<option value='$m_obj.id'>$m_obj.strFlag</option>");
+			#end
+		}
+	#end
+}
+function confirmRelateIds(){
+	if($("#first").val() == 0){
+		$("#relateIds").val("");
+	}else{
+		if($("#second").val() == 0){//没选模块，只查看页面关联元素
+			var pageId = $("#first").val();
+			var relateIds = $("#"+pageId+"_relateIds").val();
+			$("#relateIds").val(relateIds);
+		}else{//选了页面也选了对应模块，查看关联元素
+			var pageId = $("#first").val();
+			var moduleId = $("#second").val();
+			var relateIds = $("#"+pageId+"_"+moduleId+"_relateIds").val();
+			$("#relateIds").val(relateIds);
+		}
+	}
+}
 /*图片-添加*/
 function picture_add(title,url){
 	var index = layer.open({

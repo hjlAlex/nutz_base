@@ -318,8 +318,10 @@ public class AdminAction {
 	@At("/picture_list")
 	@Ok("vm:template.admin.picture_list")
 	public Map<String, Object> getPictureList(@Param("curPage") int curPage,
-			@Param("pageSize") int pageSize, @Param("keyword") String keyword) {
-		return pictureService.getPictureList(curPage, pageSize, keyword);
+			@Param("pageSize") int pageSize, @Param("keyword") String keyword,
+			@Param("relateIds") String relateIds) {
+		return pictureService.getPictureList(curPage, pageSize, keyword,
+				relateIds);
 	}
 
 	@At("/add_picture")

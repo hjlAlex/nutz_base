@@ -6,8 +6,10 @@ package com.gzwabao.util;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -260,5 +262,87 @@ public class AdminUtil {
 				.getId());
 		Module commonLogo = commonModules.get("common_logo");
 		return getPictureList(commonLogo.getRelateIds()).get(0);
+	}
+
+	/**
+	 * 获取所有页面
+	 * 
+	 * @return
+	 */
+	public List<Page> getAllPages() {
+		return pageService.getAllPages();
+	}
+
+	/**
+	 * 页面的所有指定模块
+	 * 
+	 * @return
+	 */
+	public List<Module> getAllModuleByPageId(int pageId, int type) {
+		return moduleService.getModuleList(pageId, type);
+	}
+
+	/**
+	 * 获取某个页面所有关联模块的关联元素
+	 * 
+	 * @param pageId
+	 * @return
+	 */
+	public String getRelateIdsByPageId(int pageId, int type) {
+		StringBuilder sb = new StringBuilder("");
+		List<Module> modules = moduleService.getModuleList(pageId, type);
+		if (null == modules || 0 == modules.size()) {
+			return sb.toString();
+		}
+		Set<String> rids = new HashSet<String>();
+		for (Module module : modules) {
+			String tempStr = module.getRelateIds();
+			if (StringUtils.isBlank(tempStr)) {
+				continue;
+			}
+			String[] tempArray = tempStr.split(",");
+			if (null == tempArray || 0 == tempArray.length) {
+				continue;
+			}
+			for (String string : tempArray) {
+				rids.add(string);
+			}
+		}
+		for (String rid : rids) {
+			sb.append(rid).append(",");
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		return sb.toString();
+	}
+
+	/**
+	 * 获取某个模块关联元素
+	 * 
+	 * @param moduleId
+	 * @return
+	 */
+	public String getRelateIdsByModuleId(int moduleId) {
+		StringBuilder sb = new StringBuilder("");
+		Module module = moduleService.getModuleById(moduleId);
+		if (null == module) {
+			return sb.toString();
+		}
+		Set<String> rids = new HashSet<String>();
+		String tempStr = module.getRelateIds();
+		if (StringUtils.isBlank(tempStr)) {
+			return sb.toString();
+		}
+		String[] tempArray = tempStr.split(",");
+		if (null == tempArray || 0 == tempArray.length) {
+			return sb.toString();
+		}
+		for (String string : tempArray) {
+			rids.add(string);
+		}
+		for (String rid : rids) {
+			sb.append(rid).append(",");
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		return sb.toString();
 	}
 }

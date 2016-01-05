@@ -82,6 +82,10 @@ public abstract class BaseDao<T extends Serializable> {
 		return dao.query(c, cnd, pager);
 	}
 
+	public List<T> queryAll(Class<T> c) {
+		return dao.query(c, null);
+	}
+
 	/**
 	 * 更新单个字段
 	 * 

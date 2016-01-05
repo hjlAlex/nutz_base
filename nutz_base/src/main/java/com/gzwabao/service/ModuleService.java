@@ -101,6 +101,33 @@ public class ModuleService {
 	}
 
 	/**
+	 * 页面关联指定模块
+	 * 
+	 * @param pageId
+	 * @param type
+	 * @return
+	 * @since 2015年12月18日 下午1:31:49
+	 */
+	public List<Module> getModuleList(int pageId, int type) {
+		List<Module> resultList = new ArrayList<Module>();
+		try {
+			Pager pager = new Pager();
+			int totalRecord = 0;
+			Condition cnd = Cnd.where("pageId", "=", pageId).and("type", "=",
+					type);
+			totalRecord = moduleDao.getCount(Module.class, cnd);
+			pager.setRecordCount(totalRecord);
+			pager.setPageNumber(1);
+			pager.setPageSize(totalRecord);
+			resultList = moduleDao.queryAll(Module.class, cnd, pager);
+			return resultList;
+		} catch (Exception e) {
+			log.error("获取模块列表失败!", e);
+		}
+		return null;
+	}
+
+	/**
 	 * 获取页面模块map
 	 * 
 	 * @param pageId

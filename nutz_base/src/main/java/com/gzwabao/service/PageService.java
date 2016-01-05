@@ -201,4 +201,12 @@ public class PageService {
 		return result;
 	}
 
+	/**
+	 * 获取所有页面
+	 * 
+	 * @return
+	 */
+	public List<Page> getAllPages() {
+		return pageDao.queryAll(Page.class);
+	}
 }

@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.nutz.dao.Cnd;
-import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -41,22 +40,24 @@ public class PictureService {
 	 * @param curPage
 	 * @param pageSize
 	 * @param keyword
+	 * @param relateIds
 	 * @return
 	 */
 	public Map<String, Object> getPictureList(int curPage, int pageSize,
-			String keyword) {
+			String keyword, String relateIds) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			Pager pager = new Pager();
 			int totalRecord = 0;
-			Condition cnd = null;
-			if (StringUtils.isBlank(keyword)) {
-				totalRecord = pictureDao.getCount(Picture.class, cnd);
+			Cnd cnd = Cnd.where("1", "=", 1);
+			if (StringUtils.isNotBlank(keyword)) {
+				cnd = cnd.and("name", "like", "%" + keyword + "%");
 
-			} else {
-				cnd = Cnd.where("name", "like", "%" + keyword + "%");
-				totalRecord = pictureDao.getCount(Picture.class, cnd);
 			}
+			if (StringUtils.isNotBlank(relateIds)) {
+				cnd = cnd.and("id", "in", relateIds);
+			}
+			totalRecord = pictureDao.getCount(Picture.class, cnd);
 			pager.setRecordCount(totalRecord);
 			if (curPage <= 0 || pageSize <= 0) {
 				pager.setPageNumber(1);
