@@ -1,0 +1,80 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<LINK rel="Bookmark" href="/favicon.ico" >
+<LINK rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<script type="text/javascript" src="lib/PIE_IE678.js"></script>
+<![endif]-->
+<link href="css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE 6]>
+<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>级联菜单测试</title>
+</head>
+<body>
+<div class="pd-20">
+  <select id="first">
+  	<option value="0">--请选择--</option>
+  	<option value="1">菜单1</option>
+  	<option value="2">菜单2</option>
+  	<option value="3">菜单3</option>
+  	<option value="4">菜单4</option>
+  </select>
+  <select id="second"></select>
+</div>
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="lib/Validform/5.3.2/Validform.min.js"></script>  
+<script type="text/javascript" src="lib/layer/1.9.3/layer.js"></script><script type="text/javascript" src="js/H-ui.js"></script> 
+<script type="text/javascript" src="js/H-ui.admin.js"></script> 
+<script type="text/javascript">
+	$(function(){
+		if($("#first").val() == 0){
+				$("#second").prop("disabled","disabled");
+			}else{
+				$("#second").prop("disabled","");
+			}
+		$("#first").change(function() {
+			if($("#first").val() != 0){
+				$("#second").prop("disabled","");
+				addOption($("#first").val());
+			}else{
+				$("#second").empty();
+				$("#second").prop("disabled","disabled");
+			}
+		});
+	});
+	function addOption(firstOptVal){
+		$("#second").empty();
+		if (firstOptVal == 1) {
+			$("#second").append("<option value='11'>菜单11</option>");
+			$("#second").append("<option value='12'>菜单12</option>");
+			$("#second").append("<option value='13'>菜单13</option>");
+		}else if(firstOptVal == 2){
+			$("#second").append("<option value='21'>菜单21</option>");
+			$("#second").append("<option value='22'>菜单22</option>");
+			$("#second").append("<option value='23'>菜单23</option>");
+		}else if(firstOptVal == 3){
+			$("#second").append("<option value='31'>菜单31</option>");
+			$("#second").append("<option value='32'>菜单32</option>");
+			$("#second").append("<option value='33'>菜单33</option>");
+		}else{
+			$("#second").append("<option value='41'>菜单41</option>");
+			$("#second").append("<option value='42'>菜单42</option>");
+			$("#second").append("<option value='43'>菜单43</option>");
+		}
+	}
+</script>
+</body>
+</html>

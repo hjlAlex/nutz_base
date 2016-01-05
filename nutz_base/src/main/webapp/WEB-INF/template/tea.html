@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>奶茶</title>
+    <title>奶茶饮品</title>
     <link type="text/css" rel="stylesheet" href="${base}/css/screen.css"/>
     <link type="text/css" rel="stylesheet" href="${base}/css/common.css"/>
     <link type="text/css" rel="stylesheet" href="${base}/css/fe-drinks.css"/>
@@ -12,55 +12,38 @@
     <script type="text/javascript" src="${base}/js/index.js"></script>
     <script type="text/javascript" src="${base}/js/jquery.fancybox.pack.js"></script>
 </head>
+#set($all_module = $obj)
 <body>
 <div class="doc">
     <div class="wrapper">
         <div class="header">
             <div class="inner">
-                <a class="lay-a" href="#" title="贡茶" target="_blank">
-                    <img src="http://dummyimage.com/120x90/B5E61D/fff" width="120" height="90">
+                #set($logo = $adminUtils.getCommonLogo())
+                <a class="lay-a" href="#" title="${logo.ext1}" target="_blank">
+                    <img src="${base}${logo.path}" width="120" height="90">
                 </a>
+                
                 <div class="lay-b">
-                    <a class="item" href="#" title="首页" target="_blank">
-                        <label class="tit">首页</label>
-                        <label class="desc">贡茶</label>
-                    </a>
-                    <a class="item" href="#" title="关于贡茶" target="_blank">
-                        <label class="tit">关于贡茶</label>
-                        <label class="desc">About royaltea</label>
-                    </a>
-                    <a class="item" href="#" title="加盟介绍" target="_blank">
-                        <label class="tit">加盟介绍</label>
-                        <label class="desc">Join in</label>
-                    </a>
-                    <a class="item" href="#" title="奶茶饮品" target="_blank">
-                        <label class="tit">奶茶饮品</label>
-                        <label class="desc">Tea beverage</label>
-                    </a>
-                    <a class="item" href="#" title="新闻中心" target="_blank">
-                        <label class="tit">新闻中心</label>
-                        <label class="desc">Royaltea new</label>
-                    </a>
-                    <a class="item" href="#" title="申请加盟" target="_blank">
-                        <label class="tit">申请加盟</label>
-                        <label class="desc">Joining</label>
-                    </a>
+                    #set($navs = $adminUtils.getCommonNav())
+                    #foreach($nav in $navs)
+                        <a class="item" href="${base}${nav.linkUrl}" title="${nav.name}" target="_blank">
+                            <label class="tit">${nav.name}</label>
+                            <label class="desc">${nav.ext1}</label>
+                        </a>
+                    #end
                 </div>
             </div>
         </div>
 
         <div class="banner">
             <div id="JSlide1" class="slide1">
+                #set($shuffs = $adminUtils.getCommonPicture())
                 <ul class="pics">
-                    <li>
-                        <img src="http://dummyimage.com/1920x500/B5E61D/fff" alt=" " width="1920" height="500"/>
-                    </li>
-                    <li>
-                        <img src="http://dummyimage.com/1920x500/eee/fff" alt=" " width="1920" height="500"/>
-                    </li>
-                    <li>
-                        <img src="http://dummyimage.com/1920x500/ddd/fff" alt=" " width="1920" height="500"/>
-                    </li>
+                     #foreach($shuff in $shuffs)
+                        <li>
+                            <img src="${base}${shuff.path}" alt=" " width="1920" height="500"/>
+                        </li>
+                     #end
                 </ul>
                 <a id="prev1" class="btn1 png_bg" href="javascript:void(0);"></a>
                 <a id="next1" class="btn2 png_bg" href="javascript:void(0);"></a>
@@ -78,10 +61,12 @@
                     <label class="txt">当前位置：</label>
                     <a href="#" target="_blank" title="贡茶">贡茶</a>
                     &gt;
-                    <a href="#" target="_blank" title="关于贡茶">关于贡茶</a>
+                    <a href="#" target="_blank" title="奶茶饮品">奶茶饮品</a>
                 </div>
+                #set($tea_pic_module = $all_module.get("tea_mid_rg_pic"))
+                #set($tea_pic = $adminUtils.getPictureList(${tea_pic_module.relateIds}).get(0))
                 <a class="lay-b" href="#" target="_blank" title="贡茶">
-                    <img src="http://dummyimage.com/390x80/B5E61D/fff" width="390" height="80"/>
+                    <img src="${base}${tea_pic.path}" width="390" height="80"/>
                 </a>
             </div>
         </div>
