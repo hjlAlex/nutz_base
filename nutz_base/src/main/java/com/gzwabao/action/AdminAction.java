@@ -426,9 +426,10 @@ public class AdminAction {
 	@Ok("vm:template.admin.news_list")
 	public Map<String, Object> getNewsList(@Param("curPage") int curPage,
 			@Param("pageSize") int pageSize, @Param("datemin") String datemin,
-			@Param("datemax") String datemax, @Param("keyword") String keyword) {
+			@Param("datemax") String datemax, @Param("keyword") String keyword,
+			@Param("relateIds") String relateIds) {
 		return newsService.getNewsList(curPage, pageSize, datemin, datemax,
-				keyword);
+				keyword, relateIds);
 	}
 
 	@At("/update_news")
@@ -468,8 +469,9 @@ public class AdminAction {
 	@At("/nav_list")
 	@Ok("vm:template.admin.nav_list")
 	public Map<String, Object> getNavList(@Param("curPage") int curPage,
-			@Param("pageSize") int pageSize, @Param("keyword") String keyword) {
-		return navService.getNavList(curPage, pageSize, keyword);
+			@Param("pageSize") int pageSize, @Param("keyword") String keyword,
+			@Param("relateIds") String relateIds) {
+		return navService.getNavList(curPage, pageSize, keyword, relateIds);
 	}
 
 	/**

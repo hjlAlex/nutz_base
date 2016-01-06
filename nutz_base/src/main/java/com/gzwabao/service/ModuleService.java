@@ -101,7 +101,7 @@ public class ModuleService {
 	}
 
 	/**
-	 * 页面关联指定模块
+	 * 页面关联指定类型模块
 	 * 
 	 * @param pageId
 	 * @param type

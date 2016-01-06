@@ -86,7 +86,10 @@ public class FrontAction {
 	@At("/tea")
 	@Ok("vm:template.tea")
 	public Map<String, Module> tea() {
-
+		Page tea = pageService.getPageByStrId("tea");
+		if (null != tea) {
+			return moduleService.getModuleMap(tea.getId());
+		}
 		return null;
 	}
 
@@ -98,7 +101,10 @@ public class FrontAction {
 	@At("/news")
 	@Ok("vm:template.news")
 	public Map<String, Module> news() {
-
+		Page news = pageService.getPageByStrId("news");
+		if (null != news) {
+			return moduleService.getModuleMap(news.getId());
+		}
 		return null;
 	}
 
@@ -115,7 +121,7 @@ public class FrontAction {
 	}
 
 	@At("/applyJoin")
-	@Ok("vm:template.admin.join_apply")
+	@Ok("vm:template.join_apply")
 	public int applyJoin(@Param("..") Apply apply) {
 		return applyService.addApply(apply);
 	}

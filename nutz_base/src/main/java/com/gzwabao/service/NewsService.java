@@ -75,7 +75,7 @@ public class NewsService {
 	 * @since 2015年12月17日 下午1:32:53
 	 */
 	public Map<String, Object> getNewsList(int curPage, int pageSize,
-			String datemin, String datemax, String keyword) {
+			String datemin, String datemax, String keyword, String relateIds) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			Pager pager = new Pager();
@@ -90,7 +90,9 @@ public class NewsService {
 			}
 			if (StringUtils.isNotBlank(keyword)) {
 				cnd = cnd.and("title", "like", "%" + keyword + "%");
-
+			}
+			if (StringUtils.isNotBlank(relateIds)) {
+				cnd = cnd.and("id", "in", relateIds);
 			}
 			totalRecord = newsDao.getCount(News.class, cnd);
 			pager.setRecordCount(totalRecord);

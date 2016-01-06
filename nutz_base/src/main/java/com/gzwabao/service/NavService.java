@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.nutz.dao.Cnd;
-import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -64,20 +63,20 @@ public class NavService {
 	 * @return
 	 */
 	public Map<String, Object> getNavList(int curPage, int pageSize,
-			String keyword) {
+			String keyword, String relateIds) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			Pager pager = new Pager();
 			int totalRecord = 0;
-			Condition cnd = null;
-			if (StringUtils.isBlank(keyword)) {
-				totalRecord = navDao.getCount(Navigation.class, null);
-
-			} else {
-				cnd = Cnd.where("name", "like", "%" + keyword + "%").or(
+			Cnd cnd = Cnd.where("1", "=", 1);
+			if (StringUtils.isNotBlank(keyword)) {
+				cnd = cnd.and("name", "like", "%" + keyword + "%").or(
 						"linkUrl", "like", "%" + keyword + "%");
-				totalRecord = navDao.getCount(Navigation.class, cnd);
 			}
+			if (StringUtils.isNotBlank(relateIds)) {
+				cnd = cnd.and("id", "in", relateIds);
+			}
+			totalRecord = navDao.getCount(Navigation.class, cnd);
 			pager.setRecordCount(totalRecord);
 			if (curPage <= 0 || pageSize <= 0) {
 				pager.setPageNumber(1);

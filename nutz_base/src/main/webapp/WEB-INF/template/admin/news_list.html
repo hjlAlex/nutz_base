@@ -25,10 +25,25 @@
 #set($recordList = $obj.recordList)
 #set($pager = $obj.pager)
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>资讯管理 <span class="c-gray en">&gt;</span> 资讯列表 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>资讯管理 <span class="c-gray en">&gt;</span> 资讯列表 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:refresh();" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="pd-20">
 	<div class="text-r">
 		<form action="news_list" method="post">
+			页面过滤:
+			<select id="first" class="select-box" style="width:120px;">
+			  	<option value="0">--请选择--</option>
+				#foreach($page_obj in $adminUtils.getAllPages())
+					<option value="$page_obj.id">$page_obj.remark</option>
+				#end			  	
+		    </select>
+		  	<select id="second" class="select-box" style="width:120px;"></select>
+		  	#foreach($page_obj in $adminUtils.getAllPages())
+		  		<input id="${page_obj.id}_relateIds" type="hidden" value="$adminUtils.getRelateIdsByPageId($page_obj.id,2)">
+		  		#foreach($module_obj in $adminUtils.getAllModuleByPageId($page_obj.id,2))
+		  			<input id="${page_obj.id}_${module_obj.id}_relateIds" type="hidden" value="$adminUtils.getRelateIdsByModuleId($module_obj.id)">
+		  		#end
+		  	#end
+		  	<input id="relateIds" type="hidden" name="relateIds">
 			更新时间：
 			<input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" id="datemin" name="datemin" class="input-text Wdate" style="width:120px;">
 			-
@@ -123,8 +138,58 @@ $(function(){
     		}
     	});
     	$("#chkAll").prop("checked", state);
-    });  
+    });
+    
+    if($("#first").val() == 0){
+		$("#second").prop("disabled","disabled");
+	}else{
+		$("#second").prop("disabled","");
+	}
+	$("#first").change(function() {
+		if($("#first").val() != 0){
+			$("#second").prop("disabled","");
+			addOption($("#first").val());
+		}else{
+			$("#second").empty();
+			$("#second").prop("disabled","disabled");
+		}
+		confirmRelateIds();
+	});
+	$("#second").change(function() {
+		confirmRelateIds();
+	});
 });
+
+function addOption(firstOptVal){
+	$("#second").empty();
+	$("#second").append("<option value='0'>--请选择--</option>");
+	var pageId = "";
+	#foreach($p_obj in $adminUtils.getAllPages())
+		pageId = "$p_obj.id";
+		if(pageId == firstOptVal){
+			#foreach($m_obj in $adminUtils.getAllModuleByPageId($p_obj.id,2))
+				$("#second").append("<option value='$m_obj.id'>$m_obj.strFlag</option>");
+			#end
+		}
+	#end
+}
+function confirmRelateIds(){
+	if($("#first").val() == 0){
+		$("#relateIds").val("");
+	}else{
+		if($("#second").val() == 0){//没选模块，只查看页面关联元素
+			var pageId = $("#first").val();
+			var relateIds = $("#"+pageId+"_relateIds").val();
+			$("#relateIds").val(relateIds);
+		}else{//选了页面也选了对应模块，查看关联元素
+			var pageId = $("#first").val();
+			var moduleId = $("#second").val();
+			var relateIds = $("#"+pageId+"_"+moduleId+"_relateIds").val();
+			$("#relateIds").val(relateIds);
+		}
+	}
+}
+
 /*资讯-添加*/
 function news_add(title,url){
 	var index = layer.open({
@@ -204,7 +269,7 @@ function refresh(){
     temp.action = "news_list";        
     temp.method = "post";        
     temp.style.display = "none";
-    var params = {"curPage":'$!pager.pageNumber',"pageSize":'$!pager.pageSize',"datemin":'$!{p.datemin}',"datemax":'$!{p.datemax}',"keyword":'$!{p.keyword}'};
+    var params = {"curPage":'$!pager.pageNumber',"pageSize":'$!pager.pageSize',"datemin":'$!{p.datemin}',"datemax":'$!{p.datemax}',"keyword":'$!{p.keyword}',"relateIds":'$!p.relateIds'};
     for (var x in params) {
         var opt = document.createElement("textarea");        
         opt.name = x;        
@@ -220,7 +285,7 @@ function goPage(curPage,pageSize) {
     temp.action = "news_list";        
     temp.method = "post";        
     temp.style.display = "none";
-    var params = {"curPage":'$!pager.pageNumber',"pageSize":'$!pager.pageSize',"datemin":'$!{p.datemin}',"datemax":'$!{p.datemax}',"keyword":'$!{p.keyword}'};
+    var params = {"curPage":'$!pager.pageNumber',"pageSize":'$!pager.pageSize',"datemin":'$!{p.datemin}',"datemax":'$!{p.datemax}',"keyword":'$!{p.keyword}',"relateIds":'$!p.relateIds'};
     for (var x in params) {
         var opt = document.createElement("textarea");        
         opt.name = x;        

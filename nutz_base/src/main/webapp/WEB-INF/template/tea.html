@@ -63,72 +63,27 @@
                     &gt;
                     <a href="#" target="_blank" title="奶茶饮品">奶茶饮品</a>
                 </div>
-                #set($tea_pic_module = $all_module.get("tea_mid_rg_pic"))
-                #set($tea_pic = $adminUtils.getPictureList(${tea_pic_module.relateIds}).get(0))
+                #set($tea_mid_rg_pic_module = $all_module.get("tea_mid_rg_pic"))
+                #set($tea_mid_rg_pic = $adminUtils.getPictureList(${tea_mid_rg_pic_module.relateIds}).get(0))
                 <a class="lay-b" href="#" target="_blank" title="贡茶">
-                    <img src="${base}${tea_pic.path}" width="390" height="80"/>
+                    <img src="${base}${tea_mid_rg_pic.path}" width="390" height="80"/>
                 </a>
             </div>
         </div>
 
         <div class="area2">
             <div class="inner">
+            	#set($tea_mid_pic_module = $all_module.get("tea_mid_pic"))
+                #set($tea_mid_pics = $adminUtils.getPictureList(${tea_mid_pic_module.relateIds}))
+                #foreach($tea_mid_pic in $tea_mid_pics)
                 <div class="item">
-                    <a class="fancybox" href="./images/1.jpg"
-                       data-fancybox-group="gallery" title="">
-                        <img src="http://dummyimage.com/210x210/B5E61D/fff" width="210" height="210"/>
+                    <a class="fancybox" href="${base}${tea_mid_pic.path}"
+                       data-fancybox-group="gallery" title="${tea_mid_pic.ext1}">
+                        <img src="${base}${tea_mid_pic.path}" width="210" height="210"/>
                     </a>
-                    <label class="txt">抹茶奶绿</label>
+                    <label class="txt">${tea_mid_pic.ext1}</label>
                 </div>
-                <div class="item">
-                    <a class="fancybox" href="./images/2.jpg"
-                       data-fancybox-group="gallery" title="">
-                        <img src="http://dummyimage.com/210x210/B5E61D/fff" width="210" height="210"/>
-                    </a>
-                    <label class="txt">抹茶奶绿</label>
-                </div>
-                <div class="item">
-                    <a class="fancybox" href="./images/3.jpg"
-                       data-fancybox-group="gallery" title="">
-                        <img src="http://dummyimage.com/210x210/B5E61D/fff" width="210" height="210"/>
-                    </a>
-                    <label class="txt">抹茶奶绿</label>
-                </div>
-                <div class="item">
-                    <a class="fancybox" href="./images/1.jpg"
-                       data-fancybox-group="gallery" title="">
-                        <img src="http://dummyimage.com/210x210/B5E61D/fff" width="210" height="210"/>
-                    </a>
-                    <label class="txt">抹茶奶绿</label>
-                </div>
-                <div class="item">
-                    <a class="fancybox" href="./images/2.jpg"
-                       data-fancybox-group="gallery" title="">
-                        <img src="http://dummyimage.com/210x210/B5E61D/fff" width="210" height="210"/>
-                    </a>
-                    <label class="txt">抹茶奶绿</label>
-                </div>
-                <div class="item">
-                    <a class="fancybox" href="./images/3.jpg"
-                       data-fancybox-group="gallery" title="">
-                        <img src="http://dummyimage.com/210x210/B5E61D/fff" width="210" height="210"/>
-                    </a>
-                    <label class="txt">抹茶奶绿</label>
-                </div>
-                <div class="item">
-                    <a class="fancybox" href="./images/1.jpg"
-                       data-fancybox-group="gallery" title="">
-                        <img src="http://dummyimage.com/210x210/B5E61D/fff" width="210" height="210"/>
-                    </a>
-                    <label class="txt">抹茶奶绿</label>
-                </div>
-                <div class="item">
-                    <a class="fancybox" href="./images/2.jpg"
-                       data-fancybox-group="gallery" title="">
-                        <img src="http://dummyimage.com/210x210/B5E61D/fff" width="210" height="210"/>
-                    </a>
-                    <label class="txt">抹茶奶绿</label>
-                </div>
+                #end
             </div>
         </div>
 
@@ -136,7 +91,10 @@
             <div class="inner">
                 <select class="link">
                     <option>友情链接</option>
-                    <option value="#" target="_blank">奶茶店加盟</option>
+					#set($friends = $adminUtils.getCommonFriendLink())
+					#foreach($friend in $friends)
+                    <option value="$friend.linkUrl" target="_blank">$friend.name</option>
+					#end
                 </select>
                 <label class="txt">@2014-2015</label>
                 <a class="sub-link" href="#" target="_blank">加盟官方网站</a>

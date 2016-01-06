@@ -45,7 +45,7 @@ public class MainSetup implements Setup {
 			// 日常事务执行
 			Tasks.scheduleAtFixedRate(new Runnable() {
 				public void run() {
-					System.out.println("task runing...");
+					// 可以写定点要干的事情
 				}
 			}, "2015-12-05 12:41:00", 35, TimeUnit.SECONDS);
 		} catch (Exception e) {
